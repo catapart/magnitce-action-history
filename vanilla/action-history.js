@@ -1,6 +1,16 @@
 // action-history.css?raw
 var action_history_default = ":host\r\n{\r\n    display: flex; /* needed for reverse ordering */\r\n    flex-direction: column;\r\n    overflow: auto;\r\n}\r\n\r\n::slotted([data-entry])\r\n{\r\n    cursor: pointer;\r\n    flex-shrink: 0; /* prevents squishing due to the flex display */\r\n}\r\n\r\n::slotted([data-active][data-entry])\r\n{\r\n    text-decoration: underline;\r\n}\r\n\r\n::slotted([data-entry][data-reversed])\r\n{\r\n    scale: .98;\r\n    opacity: .5;\r\n}";
 
+// history-entry-type.enum.ts
+var HistoryEntryType = /* @__PURE__ */ ((HistoryEntryType2) => {
+  HistoryEntryType2["Create"] = "create";
+  HistoryEntryType2["Read"] = "read";
+  HistoryEntryType2["Update"] = "update";
+  HistoryEntryType2["Delete"] = "delete";
+  HistoryEntryType2["Custom"] = "custom";
+  return HistoryEntryType2;
+})(HistoryEntryType || {});
+
 // action-history.ts
 var ATTRIBUTENAME_REVERSED = "data-reversed";
 var ATTRIBUTENAME_ACTIVE = "data-active";
@@ -259,5 +269,6 @@ export {
   ATTRIBUTENAME_ENTRY,
   ATTRIBUTENAME_REVERSED,
   ATTRIBUTENAME_TIMESTAMP,
-  ActionHistoryElement
+  ActionHistoryElement,
+  HistoryEntryType
 };

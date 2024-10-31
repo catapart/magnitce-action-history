@@ -1,3 +1,11 @@
+declare enum HistoryEntryType {
+    Create = "create",
+    Read = "read",
+    Update = "update",
+    Delete = "delete",
+    Custom = "custom"
+}
+
 type EntryActivationProperties = {
     target: HTMLElement;
     previousActiveEntry?: HTMLElement;
@@ -52,4 +60,4 @@ declare class ActionHistoryElement extends HTMLElement {
     attributeChangedCallback(attributeName: string, _oldValue: string, newValue: string): void;
 }
 
-export { ATTRIBUTENAME_ACTIVE, ATTRIBUTENAME_ENTRY, ATTRIBUTENAME_REVERSED, ATTRIBUTENAME_TIMESTAMP, ActionHistoryElement, type EntryActivationProperties };
+export { ATTRIBUTENAME_ACTIVE, ATTRIBUTENAME_ENTRY, ATTRIBUTENAME_REVERSED, ATTRIBUTENAME_TIMESTAMP, ActionHistoryElement, type EntryActivationProperties, HistoryEntryType };

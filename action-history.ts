@@ -1,5 +1,7 @@
 import { default as style } from './action-history.css?raw';
+import { HistoryEntryType } from './history-entry-type.enum';
 
+export { HistoryEntryType };
 export type EntryActivationProperties = 
 {
     target: HTMLElement,
