@@ -1,0 +1,140 @@
+html
+{
+    color-scheme: light dark;
+    height: 100%;
+}
+
+html
+,body
+{
+    margin: 0;
+    padding: 0;
+}
+
+body
+{
+    display: flex;
+    min-height: 100dvh;
+    font-family: sans-serif;
+}
+
+:is(header,h1,h2,h3,h4,h5,h6)
+{
+    color: rgb(121, 123, 216);
+}
+
+p
+{
+    max-width: 60ch;
+}
+
+main
+{
+    display: grid;
+    padding: 1em;
+    flex: 1;
+    gap: 1em;
+    grid-template-columns: 1fr minmax(300px, 960px) 1fr;
+}
+
+main :is(p, dl)
+{
+    max-width: 75ch;
+    margin-inline: auto;
+}
+
+main :is(h1, .overview, article)
+{
+    grid-column: 2;
+}
+
+main article
+{
+    padding: 2em;
+    border-radius: 10px;
+    border: solid 1px #999;
+    background-color: #f3f3f3;
+    color: buttontext;
+    display: flex;
+    flex-direction: column;
+}
+@media (prefers-color-scheme: dark) 
+{
+    main article
+    {
+        background-color: #222;
+        border-color: #333;
+    }
+}
+
+main code
+{
+    background-color: field;
+    border: solid 1px buttonface;
+    color: #bb5d26;
+    padding: 2px 5px;
+    display: inline-block;
+    border-radius: 2px;
+}
+
+header
+{
+    font-size: 1.3em;
+}
+
+article menu
+{
+    padding: 0;
+    display: flex;
+    gap: 1em;
+}
+
+article .example
+{
+    margin-block: 1em;
+    margin-inline: auto;
+}
+
+article .example > div
+{
+    margin-block: 1em;
+}
+
+article .example > section
+{
+    margin-block: 1em;
+}
+
+article .example > section > header
+{
+    font-size: 1.1em;
+}
+
+header:has(small)
+{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+header > small
+{
+    font-size: .6em;
+}
+
+.log
+{
+    background: field;
+    color: fieldtext;
+    border: solid 1px #616161;
+    border-radius: 2px;
+    padding: 1em;
+    height: 200px;
+    overflow: auto;
+    margin: 1em;
+}
+.log header
+{
+    font-size: 1rem;
+    font-weight: bold;
+}

@@ -1,0 +1,23 @@
+:host
+{
+    display: flex; /* needed for reverse ordering */
+    flex-direction: column;
+    overflow: auto;
+}
+
+::slotted([data-entry])
+{
+    cursor: pointer;
+    flex-shrink: 0; /* prevents squishing due to the flex display */
+}
+
+::slotted([data-active][data-entry])
+{
+    text-decoration: underline;
+}
+
+::slotted([data-entry][data-reversed])
+{
+    scale: .98;
+    opacity: .5;
+}

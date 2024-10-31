@@ -1,0 +1,42 @@
+{
+  "name": "@magnit-ce/action-history",
+  "version": "0.0.1",
+  "description": "A custom html element that documents user actions in the DOM and provides functionality for navigating the history of those actions.",
+  "type": "module",
+  "main": "dist/action-history.js",
+  "module": "dist/action-history.mjs",
+  "types": "dist/action-history.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup action-history.ts --format cjs,esm --dts --clean",
+    "build-vanilla": "tsup action-history.ts --format esm --dts --clean --outDir ./vanilla",
+    "minify": "tsup action-history.ts --format esm --config ./tsup.config.min.ts --outDir ./vanilla --minify",
+    "lint": "tsup action-history.ts --format esm --tsconfig ./tsconfig.lint.json",
+    "package": "npm run build && npm run build-vanilla && npm run minify",
+    "release": "npm run package && changeset publish"
+  },
+  "keywords": [
+    "custom",
+    "element",
+    "html",
+    "undo",
+    "redo",
+    "history",
+    "action"
+  ],
+  "author": "catapart",
+  "license": "CC0-1.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/catapart/magnitce-action-history"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.27.7",
+    "minify": "^11.4.0",
+    "terser": "^5.31.3",
+    "tsup": "^8.2.0",
+    "typescript": "^5.5.3"
+  }
+}
