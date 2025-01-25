@@ -37,6 +37,7 @@ var ActionHistoryElement = class extends HTMLElement {
     return this.getAttribute("timestamp-attribute") ?? ATTRIBUTENAME_TIMESTAMP;
   }
   #slot;
+  #boundSlotChange;
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
@@ -45,7 +46,16 @@ var ActionHistoryElement = class extends HTMLElement {
     this.#boundSlotChange = ((_event) => {
       const children = this.#slot.assignedElements();
       if (children.length == 1 && children[0] instanceof HTMLSlotElement) {
-        this.#registerSlot(children[0]);
+        let descendantSlot = children[0];
+        let descendantSlotChildren = descendantSlot.assignedElements();
+        while (descendantSlot instanceof HTMLSlotElement && descendantSlotChildren[0] instanceof HTMLSlotElement) {
+          descendantSlot = descendantSlotChildren[0];
+          if (descendantSlot instanceof HTMLSlotElement) {
+            descendantSlotChildren = descendantSlot.assignedElements();
+          }
+        }
+        this.#registerSlot(descendantSlot);
+        return;
       }
       this.#updateEntries(children);
     }).bind(this);
@@ -58,7 +68,6 @@ var ActionHistoryElement = class extends HTMLElement {
       this.activateEntry(target);
     });
   }
-  #boundSlotChange;
   #registerSlot(slot) {
     if (this.#slot != null) {
       this.#slot.removeEventListener("slotchange", this.#boundSlotChange);

@@ -46,6 +46,7 @@ export class ActionHistoryElement extends HTMLElement
     }
 
     #slot!: HTMLSlotElement;
+    #boundSlotChange: (_event: Event) => void;
 
     constructor()
     {
@@ -59,9 +60,18 @@ export class ActionHistoryElement extends HTMLElement
             const children = this.#slot.assignedElements();
             if(children.length == 1 && children[0] instanceof HTMLSlotElement)
             {
-                // console.log('subslot');
-                this.#registerSlot(children[0]);
-                // return;
+                let descendantSlot = children[0];
+                let descendantSlotChildren = descendantSlot.assignedElements()
+                while(descendantSlot instanceof HTMLSlotElement && descendantSlotChildren[0] instanceof HTMLSlotElement)
+                {
+                    descendantSlot = descendantSlotChildren[0];
+                    if(descendantSlot instanceof HTMLSlotElement)
+                    {
+                        descendantSlotChildren = descendantSlot.assignedElements();
+                    }
+                }
+                this.#registerSlot(descendantSlot);
+                return;
             }
             this.#updateEntries(children);
         }).bind(this);
@@ -76,7 +86,6 @@ export class ActionHistoryElement extends HTMLElement
             this.activateEntry(target);
         })
     }
-    #boundSlotChange: (_event: Event) => void;
     #registerSlot(slot: HTMLSlotElement)
     {
         if(this.#slot != null)
