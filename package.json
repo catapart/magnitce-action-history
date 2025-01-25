@@ -1,6 +1,6 @@
 {
   "name": "@magnit-ce/action-history",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A custom html element that documents user actions in the DOM and provides functionality for navigating the history of those actions.",
   "type": "module",
   "main": "dist/action-history.js",

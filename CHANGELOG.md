@@ -1,5 +1,11 @@
 # @magnit-ce/action-history
 
+## 0.0.4
+
+### Patch Changes
+
+- a511cd7: correctly implemented slots to allow for shadow-dom nesting
+
 ## 0.0.3
 
 ### Patch Changes
