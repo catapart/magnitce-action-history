@@ -775,7 +775,7 @@
                     </footer>
                 </section>
                 <section class="right history">
-                    <shadow-wrapper></shadow-wrapper>
+                    <shadow-wrapper-2></shadow-wrapper-2>
                 </section>
                 <footer class="controls">
                     <button type="button" class="undo">Undo</button>
@@ -790,9 +790,10 @@
             </div>
             <script type="module">
                 import './shadow-wrapper.js';
+                import './shadow-wrapper-2.js';
                 const nestedSlotsExample = document.querySelector('article.nested-slots');
-                const nestedSlotsWrapper = nestedSlotsExample.querySelector('shadow-wrapper');
-                const nestedSlotsHistory = nestedSlotsWrapper.shadowRoot.querySelector('action-history');
+                const nestedSlotsWrapper = nestedSlotsExample.querySelector('shadow-wrapper-2');
+                const nestedSlotsHistory = nestedSlotsWrapper.shadowRoot.querySelector('shadow-wrapper').shadowRoot.querySelector('action-history');
                 const nestedSlotsLog = document.querySelector('article.nested-slots .log ul');
                 const nestedSlotsReverseButton = nestedSlotsExample.querySelector('button.reverse');
 

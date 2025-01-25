@@ -45,9 +45,7 @@ var ActionHistoryElement = class extends HTMLElement {
     this.#boundSlotChange = ((_event) => {
       const children = this.#slot.assignedElements();
       if (children.length == 1 && children[0] instanceof HTMLSlotElement) {
-        console.log("subslot");
         this.#registerSlot(children[0]);
-        return;
       }
       this.#updateEntries(children);
     }).bind(this);
