@@ -1,5 +1,5 @@
 // action-history.css?raw
-var action_history_default = ":host\r\n{\r\n    display: flex; /* needed for reverse ordering */\r\n    flex-direction: column;\r\n    overflow: auto;\r\n}\r\n\r\n::slotted([data-entry])\r\n{\r\n    cursor: pointer;\r\n    flex-shrink: 0; /* prevents squishing due to the flex display */\r\n}\r\n\r\n::slotted([data-active][data-entry])\r\n{\r\n    text-decoration: underline;\r\n}\r\n\r\n::slotted([data-entry][data-reversed])\r\n{\r\n    scale: .98;\r\n    opacity: .5;\r\n}";
+var action_history_default = ":host\r\n{\r\n    display: flex; /* needed for reverse ordering */\r\n    flex-direction: column;\r\n    overflow: auto;\r\n}\r\n:host([empty])::before\r\n{\r\n    content: attr(placeholder);\r\n    color: graytext;\r\n    font-style: italic;\r\n    width: 100%;\r\n    height: 100%;\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: center;\r\n}\r\n\r\n::slotted([data-entry])\r\n{\r\n    cursor: pointer;\r\n    flex-shrink: 0; /* prevents squishing due to the flex display */\r\n}\r\n\r\n::slotted([data-active][data-entry])\r\n{\r\n    text-decoration: underline;\r\n}\r\n\r\n::slotted([data-entry][data-reversed])\r\n{\r\n    scale: .98;\r\n    opacity: .5;\r\n}";
 
 // history-entry-type.enum.ts
 var HistoryEntryType = /* @__PURE__ */ ((HistoryEntryType2) => {
@@ -42,31 +42,16 @@ var ActionHistoryElement = class extends HTMLElement {
     this.attachShadow({ mode: "open" });
     this.shadowRoot.innerHTML = `<slot></slot>`;
     this.shadowRoot.adoptedStyleSheets.push(COMPONENT_STYLESHEET);
-    this.#slot = this.shadowRoot.querySelector(`slot`);
-    this.#slot.addEventListener("slotchange", (event) => {
+    this.#boundSlotChange = ((_event) => {
       const children = this.#slot.assignedElements();
-      this.querySelector(`[${this.activeAttributeName}][${this.timestampAttributeName}]`)?.removeAttribute(this.activeAttributeName);
-      let lastChild = null;
-      for (let i = 0; i < children.length; i++) {
-        if (children[i].getAttribute(this.entryAttributeName) == null) {
-          continue;
-        }
-        lastChild = children[i];
-        if (children[i].hasAttribute(this.timestampAttributeName)) {
-          continue;
-        }
-        const toReverse = [...this.querySelectorAll("[data-reversed]")];
-        for (let i2 = 0; i2 < toReverse.length; i2++) {
-          toReverse[i2].remove();
-        }
-        children[i].setAttribute(this.timestampAttributeName, Date.now().toString());
-        this.updateOrder();
-        this.dispatchEvent(new CustomEvent("add", { detail: { target: children[i] } }));
+      if (children.length == 1 && children[0] instanceof HTMLSlotElement) {
+        console.log("subslot");
+        this.#registerSlot(children[0]);
+        return;
       }
-      if (this.querySelector(`[${this.activeAttributeName}]`) == null && lastChild != null && lastChild.getAttribute(this.reversedAttributeName) == null) {
-        lastChild.toggleAttribute(this.activeAttributeName, true);
-      }
-    });
+      this.#updateEntries(children);
+    }).bind(this);
+    this.#registerSlot(this.shadowRoot.querySelector(`slot`));
     this.addEventListener("click", (event) => {
       const target = event.target.closest(`[${this.entryAttributeName}]`);
       if (target == null) {
@@ -75,18 +60,57 @@ var ActionHistoryElement = class extends HTMLElement {
       this.activateEntry(target);
     });
   }
+  #boundSlotChange;
+  #registerSlot(slot) {
+    if (this.#slot != null) {
+      this.#slot.removeEventListener("slotchange", this.#boundSlotChange);
+    }
+    this.#slot = slot;
+    this.#slot.addEventListener("slotchange", this.#boundSlotChange);
+    this.toggleAttribute("empty", this.#slot.assignedElements().length == 0);
+  }
+  #updateEntries(children) {
+    let activeEntry = children.find((item) => item.getAttribute(this.activeAttributeName) != null);
+    if (activeEntry != null && activeEntry.getAttribute(this.timestampAttributeName) != null) {
+      activeEntry.removeAttribute(this.activeAttributeName);
+      activeEntry = void 0;
+    }
+    let lastChild = null;
+    for (let i = 0; i < children.length; i++) {
+      if (children[i].getAttribute(this.entryAttributeName) == null) {
+        continue;
+      }
+      lastChild = children[i];
+      if (children[i].hasAttribute(this.timestampAttributeName)) {
+        continue;
+      }
+      const toReverse = children.filter((item) => item.getAttribute("data-reversed") != null);
+      for (let i2 = 0; i2 < toReverse.length; i2++) {
+        toReverse[i2].remove();
+      }
+      children[i].setAttribute(this.timestampAttributeName, Date.now().toString());
+      this.updateOrder(children);
+      this.dispatchEvent(new CustomEvent("add", { detail: { target: children[i] }, bubbles: true, composed: true }));
+    }
+    if (activeEntry == null && lastChild != null && lastChild.getAttribute(this.reversedAttributeName) == null) {
+      lastChild.toggleAttribute(this.activeAttributeName, true);
+    }
+    this.toggleAttribute("empty", children.length == 0);
+  }
   updateOrder(children) {
     children = children ?? this.#slot.assignedElements();
     if (this.hasAttribute("reverse")) {
       for (let i = 0; i < children.length; i++) {
-        const order = this.children.length - i;
-        children[i].tabIndex = order;
-        children[i].style.order = order.toString();
+        const order = children.length - i;
+        const element = children[i];
+        element.tabIndex = order;
+        element.style.order = order.toString();
       }
     } else {
       for (let i = 0; i < children.length; i++) {
-        children[i].removeAttribute("tabindex");
-        children[i].style.removeProperty("order");
+        const element = children[i];
+        element.removeAttribute("tabindex");
+        element.style.removeProperty("order");
       }
     }
   }
@@ -95,7 +119,7 @@ var ActionHistoryElement = class extends HTMLElement {
    * @returns `void`
    */
   back() {
-    const children = [...this.children];
+    const children = this.#slot.assignedElements();
     const activeEntry = children.find((item) => item.getAttribute(this.activeAttributeName) != null);
     if (activeEntry == null) {
       return;
@@ -121,7 +145,7 @@ var ActionHistoryElement = class extends HTMLElement {
    * @returns `void`
    */
   forward() {
-    const children = [...this.children];
+    const children = this.#slot.assignedElements();
     let activeEntry = children.find((item) => item.getAttribute(this.activeAttributeName) != null);
     const forwardIndex = activeEntry == null ? children.length > 0 ? 0 : -1 : children.indexOf(activeEntry) + 1;
     if (forwardIndex == -1) {
@@ -138,14 +162,14 @@ var ActionHistoryElement = class extends HTMLElement {
    */
   async activateEntry(target) {
     if (target.hasAttribute(this.activeAttributeName)) {
-      this.dispatchEvent(new CustomEvent("refresh", { detail: { target } }));
+      this.dispatchEvent(new CustomEvent("refresh", { detail: { target }, bubbles: true, composed: true }));
       return;
     }
     const activationProperties = await this.#activateEntry(target);
-    this.dispatchEvent(new CustomEvent("activate", { detail: activationProperties }));
+    this.dispatchEvent(new CustomEvent("activate", { detail: activationProperties, bubbles: true, composed: true }));
   }
   async #activateEntry(target) {
-    const children = [...this.children];
+    const children = this.#slot.assignedElements();
     const previousActiveEntry = children.find((item) => item.getAttribute(this.activeAttributeName) != null);
     if (previousActiveEntry != null) {
       previousActiveEntry.removeAttribute(this.activeAttributeName);
@@ -199,7 +223,7 @@ var ActionHistoryElement = class extends HTMLElement {
     if (target.hasAttribute(this.reversedAttributeName)) {
       return;
     }
-    const children = [...this.children];
+    const children = this.#slot.assignedElements();
     const previousActiveEntry = children.find((item) => item.getAttribute(this.activeAttributeName) != null);
     if (previousActiveEntry != null) {
       previousActiveEntry.removeAttribute(this.activeAttributeName);
@@ -212,11 +236,13 @@ var ActionHistoryElement = class extends HTMLElement {
       await this.onBack(target, target, [target], targetIndex, previousActiveEntryIndex);
       target.toggleAttribute(this.reversedAttributeName, true);
       target.removeAttribute(this.activeAttributeName);
-      const preceedingItem2 = this.querySelector(`[data-entry]:has(+ [data-timestamp="${target.dataset.timestamp}"])`);
+      const itemIndex2 = children.findIndex((item) => item.dataset.timestamp == target.dataset.timestamp);
+      const preceedingItemIndex2 = itemIndex2 - 1;
+      const preceedingItem2 = preceedingItemIndex2 < 0 || preceedingItemIndex2 > children.length - 1 ? void 0 : children[preceedingItemIndex2];
       if (preceedingItem2 != null) {
         preceedingItem2.toggleAttribute(this.activeAttributeName, true);
       }
-      this.dispatchEvent(new CustomEvent("reverse", { detail: { target, previousActiveEntry, toReverse, toActivate, targetIndex, previousActiveEntryIndex } }));
+      this.dispatchEvent(new CustomEvent("reverse", { detail: { target, previousActiveEntry, toReverse, toActivate, targetIndex, previousActiveEntryIndex }, bubbles: true, composed: true }));
       return;
     }
     if (previousActiveEntryIndex > targetIndex) {
@@ -244,17 +270,16 @@ var ActionHistoryElement = class extends HTMLElement {
       const activateTarget = toActivate[toActivate.length - 1];
       await this.onForward(activateTarget, previousActiveEntry, toActivate, children.indexOf(activateTarget), previousActiveEntryIndex);
     }
-    const preceedingItem = this.querySelector(`[data-entry]:has(+ [data-timestamp="${target.dataset.timestamp}"])`);
+    const itemIndex = children.findIndex((item) => item.dataset.timestamp == target.dataset.timestamp);
+    const preceedingItemIndex = itemIndex - 1;
+    const preceedingItem = preceedingItemIndex < 0 || preceedingItemIndex > children.length - 1 ? void 0 : children[preceedingItemIndex];
     if (preceedingItem != null) {
       preceedingItem.toggleAttribute(this.activeAttributeName, true);
     }
     target.removeAttribute(this.activeAttributeName);
-    this.dispatchEvent(new CustomEvent("reverse", { detail: activationProperties }));
+    this.dispatchEvent(new CustomEvent("reverse", { detail: activationProperties, bubbles: true, composed: true }));
   }
-  static observedAttributes = [
-    /* 'placeholder',*/
-    "reverse"
-  ];
+  static observedAttributes = ["reverse"];
   attributeChangedCallback(attributeName, _oldValue, newValue) {
     if (attributeName == "reverse") {
       this.updateOrder();

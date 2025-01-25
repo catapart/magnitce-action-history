@@ -27,7 +27,7 @@ declare class ActionHistoryElement extends HTMLElement {
     get reversedAttributeName(): string;
     get timestampAttributeName(): string;
     constructor();
-    updateOrder(children?: HTMLElement[]): void;
+    updateOrder(children?: Element[]): void;
     /**
      * Activate the previous entry, if it exists.
      * @returns `void`

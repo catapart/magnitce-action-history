@@ -4,6 +4,17 @@
     flex-direction: column;
     overflow: auto;
 }
+:host([empty])::before
+{
+    content: attr(placeholder);
+    color: graytext;
+    font-style: italic;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 ::slotted([data-entry])
 {

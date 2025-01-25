@@ -45,7 +45,7 @@ export class ActionHistoryElement extends HTMLElement
         return this.getAttribute('timestamp-attribute') ?? ATTRIBUTENAME_TIMESTAMP;
     }
 
-    #slot: HTMLSlotElement;
+    #slot!: HTMLSlotElement;
 
     constructor()
     {
@@ -53,42 +53,20 @@ export class ActionHistoryElement extends HTMLElement
         this.attachShadow({ mode: 'open' });
         this.shadowRoot!.innerHTML = `<slot></slot>`;
         this.shadowRoot!.adoptedStyleSheets.push(COMPONENT_STYLESHEET);
-        
-        this.#slot = this.shadowRoot!.querySelector(`slot`) as HTMLSlotElement;
-        this.#slot.addEventListener('slotchange', (event) =>
+
+        this.#boundSlotChange = ((_event: Event) =>
         {
-
             const children = this.#slot.assignedElements();
-            this.querySelector(`[${this.activeAttributeName}][${this.timestampAttributeName}]`)?.removeAttribute(this.activeAttributeName);
-            let lastChild: Element|null = null;
-            for(let i = 0; i < children.length; i++)
+            if(children.length == 1 && children[0] instanceof HTMLSlotElement)
             {
-                if((children[i] as HTMLElement).getAttribute(this.entryAttributeName) == null)
-                { continue; }
-                
-                lastChild = children[i];
-
-                if(children[i].hasAttribute(this.timestampAttributeName))
-                { continue; }
-                
-                // if any entries have been reversed, remove them before
-                // adding a new entry
-                const toReverse = [...this.querySelectorAll('[data-reversed]')];
-                for(let i = 0; i < toReverse.length; i++)
-                {
-                    toReverse[i].remove();
-                }
-
-                children[i].setAttribute(this.timestampAttributeName, Date.now().toString());
-                this.updateOrder();
-
-                this.dispatchEvent(new CustomEvent('add', { detail: { target: children[i] }}));
+                console.log('subslot');
+                this.#registerSlot(children[0]);
+                return;
             }
-            if(this.querySelector(`[${this.activeAttributeName}]`) == null && lastChild != null && lastChild.getAttribute(this.reversedAttributeName) == null)
-            {
-                lastChild.toggleAttribute(this.activeAttributeName, true);
-            }
-        });
+            this.#updateEntries(children);
+        }).bind(this);
+        
+        this.#registerSlot(this.shadowRoot!.querySelector(`slot`) as HTMLSlotElement);
 
         
         this.addEventListener('click', (event: Event) => 
@@ -98,25 +76,79 @@ export class ActionHistoryElement extends HTMLElement
             this.activateEntry(target);
         })
     }
+    #boundSlotChange: (_event: Event) => void;
+    #registerSlot(slot: HTMLSlotElement)
+    {
+        if(this.#slot != null)
+        {
+            this.#slot.removeEventListener('slotchange', this.#boundSlotChange);
+        }
+        this.#slot = slot;
+        this.#slot.addEventListener('slotchange', this.#boundSlotChange);
+        this.toggleAttribute('empty', this.#slot.assignedElements().length == 0);
+    }
+    #updateEntries(children: Element[])
+    {
+        // clear selected
+        let activeEntry = children.find(item => item.getAttribute(this.activeAttributeName) != null);
+        if(activeEntry != null && activeEntry.getAttribute(this.timestampAttributeName) != null)
+        {
+            activeEntry.removeAttribute(this.activeAttributeName);
+            activeEntry = undefined;
+        }
 
-    updateOrder(children?: HTMLElement[])
+        let lastChild: Element|null = null;
+        for(let i = 0; i < children.length; i++)
+        {
+            if((children[i] as HTMLElement).getAttribute(this.entryAttributeName) == null)
+            { continue; }
+            
+            lastChild = children[i];
+
+            if(children[i].hasAttribute(this.timestampAttributeName))
+            { continue; }
+            
+            // if any entries have been reversed, remove them before
+            // adding a new entry
+            const toReverse = children.filter(item => item.getAttribute('data-reversed') != null);
+            for(let i = 0; i < toReverse.length; i++)
+            {
+                toReverse[i].remove();
+            }
+
+            children[i].setAttribute(this.timestampAttributeName, Date.now().toString());
+            this.updateOrder(children);
+
+            this.dispatchEvent(new CustomEvent('add', { detail: { target: children[i] }, bubbles: true, composed: true }));
+        }
+        if(activeEntry == null && lastChild != null && lastChild.getAttribute(this.reversedAttributeName) == null)
+        {
+            lastChild.toggleAttribute(this.activeAttributeName, true);
+        }
+
+        this.toggleAttribute('empty', children.length == 0);
+    }
+
+    updateOrder(children?: Element[])
     {
         children = children ?? this.#slot.assignedElements() as HTMLElement[];
         if(this.hasAttribute('reverse'))
         {
             for(let i = 0; i < children.length; i++)
             {
-                const order = (this.children.length - i);
-                children[i].tabIndex = order;
-                children[i].style.order = order.toString();
+                const order = (children.length - i);
+                const element = children[i] as HTMLElement;
+                element.tabIndex = order;
+                element.style.order = order.toString();
             }
         }
         else
         {
             for(let i = 0; i < children.length; i++)
             {
-                children[i].removeAttribute('tabindex');
-                children[i].style.removeProperty('order');
+                const element = children[i] as HTMLElement;
+                element.removeAttribute('tabindex');
+                element.style.removeProperty('order');
             }
         }
     }
@@ -127,7 +159,7 @@ export class ActionHistoryElement extends HTMLElement
      */
     back()
     {
-        const children = [...this.children] as HTMLElement[];
+        const children = this.#slot.assignedElements() as HTMLElement[];
         const activeEntry = children.find(item => item.getAttribute(this.activeAttributeName) != null);
         if(activeEntry == null) { return; }
         const activeIndex = children.indexOf(activeEntry);
@@ -156,7 +188,7 @@ export class ActionHistoryElement extends HTMLElement
      */
     forward()
     {
-        const children = [...this.children] as HTMLElement[];
+        const children = this.#slot.assignedElements() as HTMLElement[];
         let activeEntry = children.find(item => item.getAttribute(this.activeAttributeName) != null);
         const forwardIndex = (activeEntry == null) 
         ? (children.length > 0) ? 0 : -1 // use first entry's index  
@@ -177,15 +209,15 @@ export class ActionHistoryElement extends HTMLElement
     {
         if(target.hasAttribute(this.activeAttributeName))
         {
-            this.dispatchEvent(new CustomEvent('refresh', { detail: { target } }));
+            this.dispatchEvent(new CustomEvent('refresh', { detail: { target }, bubbles: true, composed: true  }));
             return;
         }
         const activationProperties = await this.#activateEntry(target);
-        this.dispatchEvent(new CustomEvent('activate', { detail: activationProperties }));
+        this.dispatchEvent(new CustomEvent('activate', { detail: activationProperties, bubbles: true, composed: true  }));
     }
     async #activateEntry(target: HTMLElement)
     {
-        const children = [...this.children] as HTMLElement[];
+        const children = this.#slot.assignedElements() as HTMLElement[];
         const previousActiveEntry = children.find(item => item.getAttribute(this.activeAttributeName) != null);
 
         if(previousActiveEntry != null) { previousActiveEntry.removeAttribute(this.activeAttributeName); }
@@ -258,7 +290,7 @@ export class ActionHistoryElement extends HTMLElement
         {
             return;
         }
-        const children = [...this.children] as HTMLElement[];
+        const children = this.#slot.assignedElements() as HTMLElement[];
         const previousActiveEntry = children.find(item => item.getAttribute(this.activeAttributeName) != null);
 
         if(previousActiveEntry != null) { previousActiveEntry.removeAttribute(this.activeAttributeName); }
@@ -274,12 +306,16 @@ export class ActionHistoryElement extends HTMLElement
             await this.onBack(target, target, [target], targetIndex, previousActiveEntryIndex);
             target.toggleAttribute(this.reversedAttributeName, true);
             target.removeAttribute(this.activeAttributeName);
-            const preceedingItem = this.querySelector(`[data-entry]:has(+ [data-timestamp="${target.dataset.timestamp}"])`) as HTMLElement;
+            
+            const itemIndex = children.findIndex(item => item.dataset.timestamp == target.dataset.timestamp);
+            const preceedingItemIndex = itemIndex - 1;
+            const preceedingItem = (preceedingItemIndex < 0 || preceedingItemIndex > children.length-1) ? undefined : children[preceedingItemIndex];
             if(preceedingItem != null)
             {
                 preceedingItem.toggleAttribute(this.activeAttributeName, true);
             }
-            this.dispatchEvent(new CustomEvent('reverse', { detail: { target, previousActiveEntry, toReverse, toActivate, targetIndex: targetIndex, previousActiveEntryIndex } }));
+
+            this.dispatchEvent(new CustomEvent('reverse', { detail: { target, previousActiveEntry, toReverse, toActivate, targetIndex: targetIndex, previousActiveEntryIndex }, bubbles: true, composed: true  }));
             return;
         }
 
@@ -322,7 +358,9 @@ export class ActionHistoryElement extends HTMLElement
             await this.onForward(activateTarget, previousActiveEntry, toActivate, children.indexOf(activateTarget), previousActiveEntryIndex);
         }
 
-        const preceedingItem = this.querySelector(`[data-entry]:has(+ [data-timestamp="${target.dataset.timestamp}"])`) as HTMLElement;
+        const itemIndex = children.findIndex(item => item.dataset.timestamp == target.dataset.timestamp);
+        const preceedingItemIndex = itemIndex - 1;
+        const preceedingItem = (preceedingItemIndex < 0 || preceedingItemIndex > children.length-1) ? undefined : children[preceedingItemIndex];
         if(preceedingItem != null)
         {
             preceedingItem.toggleAttribute(this.activeAttributeName, true);
@@ -330,17 +368,12 @@ export class ActionHistoryElement extends HTMLElement
 
         target.removeAttribute(this.activeAttributeName);
 
-        this.dispatchEvent(new CustomEvent('reverse', { detail: activationProperties }));
+        this.dispatchEvent(new CustomEvent('reverse', { detail: activationProperties, bubbles: true, composed: true  }));
     }
 
-    static observedAttributes = [ /* 'placeholder',*/ 'reverse' ];
+    static observedAttributes = [ 'reverse' ];
     attributeChangedCallback(attributeName: string, _oldValue: string, newValue: string) 
     {
-        // if(attributeName == "placeholder")
-        // {
-        //     this.shadowRoot!.querySelector('.placeholder')?.setAttribute('data-value', newValue);      
-        // }
-        // else 
         if(attributeName == 'reverse')
         {
             this.updateOrder();
