@@ -1,5 +1,11 @@
 # @magnit-ce/action-history
 
+## 0.0.6
+
+### Patch Changes
+
+- e724836: updated slot management to find deepest nested slot
+
 ## 0.0.5
 
 ### Patch Changes
