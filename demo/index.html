@@ -3,25 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Action History Demo</title>
+    <title>&lt;action-history&gt; Demo</title>
     <link rel="stylesheet" href="./demo-page.css">
-    <style>
-        action-history:not(:has(*))::before
-        {
-            content: attr(placeholder);
-            color: graytext;
-        }
-    </style>
 </head>
-<body>
-    <main>
-        <h1>Overview</h1>
-        <div class="overview">
+  <body>
+    <main class="centered-single-column">
+      <header class="full-width">
+        <div class="content centered-single-column">
+          <h1>The <code>action-history</code> element</h1>
+        </div>
+      </header>
+        <article class="overview">
+            <h2>Overview</h2>
             <p>The <code>&lt;action-history&gt;</code> element provides an interface with interactive controls for a "History" system.</p>
             <p>When developing something like an "Undo" feature, user actions are maintained in memory so that their effects can be reversed. This element is a helper for that kind of functionality. The term "History system" is used to describe the abstract version of an "Undo" feature which includes "Redo" functionality as well as direct-point-in-history access.</p>
             <p>The <code>&lt;action-history&gt;</code> element is intended to facilitate history functionality by both providing an interactive, timestamped ledger of the actions taken, and dispatching events to indicate the user's intention to undo or redo their actions.</p>
-        </div>
-        <h1>Examples</h1>
+        </article>
         <article class="basic">
             <style>
                 /* article.basic action-history
@@ -33,23 +30,25 @@
                     flex-direction: column-reverse;
                 }
             </style>
-            <header>Basic Examples</header>
+            <h2>Basic Examples</h2>
             <p>The <code>&lt;action-history&gt;</code> element maintains a full list of actions by treating each of its child elements that has a <code>data-entry</code> attribute as an entry in the history log.</p>
             <p>Any child element with the <code>data-entry</code> attribute will be "managed" by the action history, which means it will respond to click and selection events to set the history system's state.</p>
             <p>For layout and styling convenience, all child elements that do not have the <code>data-entry</code> attribute are unaffected by the <code>&lt;action-history&gt;</code> element.</p>
-            <div class="example">
+            <div>
                 <section>
-                    <header>Static Entries</header>
+                    <h3>Static Entries</h3>
                     <p>In this example the <code>&lt;action-history&gt;</code> element has been given three children, each with the <code>data-entry</code> attribute.</p>
                     <p>Each element can be clicked to "activate" the entry. When an entry is activated, all subsequent entries (if any) are "reversed", if they have not already been reversed, and all prior entries are un-reversed.</p>
-                    <action-history placeholder="History is empty">
-                        <span data-entry>Entry 1</span>
-                        <span data-entry>Entry 2</span>
-                        <span data-entry>Entry 3</span>
-                    </action-history>
+                    <div class="example">
+                        <action-history placeholder="History is empty">
+                            <span data-entry>Entry 1</span>
+                            <span data-entry>Entry 2</span>
+                            <span data-entry>Entry 3</span>
+                        </action-history>
+                    </div>
                 </section>
                 <section class="customization">
-                    <header>Customization</header>
+                    <h3>Customization</h3>
                     <p>To facilitate styling and support any representation of arbitrary history functionality, the <code>&lt;action-history&gt;</code> element does not dictate any type of content restrictions on its entry elements. Any element, including <code>&lt;button&gt;</code>s or <code>&lt;input&gt;</code>s can be used as entries.</p>
                     <p>This example uses buttons as entries so they can be activated using keypresses:</p>
                     <style>
@@ -74,11 +73,13 @@
                             background-color: rgb(0 0 0 / .4);
                         }
                     </style>
-                    <action-history>
-                        <button data-entry type="button"><span class="title">Entry 1</span></button>
-                        <button data-entry type="button"><span class="title">Entry 2</span></button>
-                        <button data-entry type="button"><span class="title">Entry 3</span></button>
-                    </action-history>
+                    <div class="example">
+                        <action-history>
+                            <button data-entry type="button"><span class="title">Entry 1</span></button>
+                            <button data-entry type="button"><span class="title">Entry 2</span></button>
+                            <button data-entry type="button"><span class="title">Entry 3</span></button>
+                        </action-history>
+                    </div>
                 </section>
                 <section class="reverse">
                     <style>
@@ -115,30 +116,34 @@
                             background-color: rgb(0 0 0 / .4);
                         }
                     </style>
-                    <header>Reverse Chronological Order</header>
+                    <h3>Reverse Chronological Order</h3>
                     <p>History items are often listed in reverse-chronological order, meaning that the latest action would be at the top of the list, and the earliest action would be at the bottom.</p>
                     <p>The <code>&lt;action-history&gt;</code> element is already styled as a flex display, so setting the <code>flex-direction</code> style property to <code>column-reverse</code> provides a visual solution for reversing the items.</p>
                     <p>Unfortunately, this causes an issue with key-based navigation. For users using tabs to navigate through entries, the entries would be iterated through in their chronological order, rather than the way they are visually presented: in reverse.</p>
                     <p>To prevent this unexpected behavior, the <code>&lt;action-history&gt;</code> element can have its entries reversed by including a <code>reverse</code> attribute.</p>
                     <p>Compare how tabs navigate through each of the examples below:</p>
-                    <div class="compare">
-                        <div>
+                    <div class="comparison">
+                        <div class="left">
                             <header>Attribute</header>
                             <p>In this example, the style is set using the <code>reverse</code> attribute:</p>
-                            <action-history reverse>
-                                <button data-entry type="button"><span class="title">Entry 1</span></button>
-                                <button data-entry type="button"><span class="title">Entry 2</span></button>
-                                <button data-entry type="button"><span class="title">Entry 3</span></button>
-                            </action-history>
+                            <div class="example">
+                                <action-history reverse>
+                                    <button data-entry type="button"><span class="title">Entry 1</span></button>
+                                    <button data-entry type="button"><span class="title">Entry 2</span></button>
+                                    <button data-entry type="button"><span class="title">Entry 3</span></button>
+                                </action-history>
+                            </div>
                         </div>
-                        <div>
+                        <div class="right">
                             <header>Style</header>
                             <p>In this example, the style is set using only the style:</p>
-                            <action-history style="flex-direction: column-reverse;">
-                                <button data-entry type="button"><span class="title">Entry 1</span></button>
-                                <button data-entry type="button"><span class="title">Entry 2</span></button>
-                                <button data-entry type="button"><span class="title">Entry 3</span></button>
-                            </action-history>
+                            <div class="example">
+                                <action-history style="flex-direction: column-reverse;">
+                                    <button data-entry type="button"><span class="title">Entry 1</span></button>
+                                    <button data-entry type="button"><span class="title">Entry 2</span></button>
+                                    <button data-entry type="button"><span class="title">Entry 3</span></button>
+                                </action-history>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -146,13 +151,13 @@
         </article>
         <article class="events">
             <style>
-                article.events .example
+                /* article.events .example
                 {
                     display: grid;
                     gap: 1em;
                     grid-template-columns: 1fr 1fr;
                     margin: 0;
-                }
+                } */
                 article.events .actions
                 {
                     border: solid 1px graytext;
@@ -199,6 +204,14 @@
                     margin-block: 7px;
                 }
 
+                @media (max-width: 665px) 
+                {
+                    article.events .controls
+                    {
+                        grid-column: 1;
+                        justify-self: flex-end;
+                    } 
+                }
 
                 
                 article.events action-history
@@ -234,7 +247,7 @@
                     border-color: highlight;
                 }
             </style>
-            <header>Events and Functions</header>
+            <h2>Events and Functions</h2>
             <p>The <code>&lt;action-history&gt;</code> element's functionality is mostly abstract so this is a practical example with actions that are being managed by the <code>&lt;action-history&gt;</code> element, and their effects being managed by handlers for the element's events and functions.</p>
             <p>Each input's change event is handled to add a new <code>&lt;action-history&gt;</code> entry. The <code>activation</code> and <code>reverse</code> events each have handlers that read the entries' data and apply that back to the input elements.</p>
             <p>The following methods of history navigation are available:</p>
@@ -274,8 +287,8 @@
                     </ul>
                 </li>
             </ul>
-            <div class="example">
-                <section class="actions">
+            <div class="comparison example">
+                <div class="left actions">
                     <header>Actions</header>
                     <label>
                         <input type="checkbox" />
@@ -301,10 +314,10 @@
                         </span>
                         <button type="button" class="reverse">Reverse</button>
                     </footer>
-                </section>
-                <section class="history">
+                </div>
+                <div class="right history">
                     <action-history placeholder="History is empty" reverse></action-history>
-                </section>
+                </div>
                 <footer class="controls">
                     <button type="button" class="undo">Undo</button>
                     <button type="button" class="redo">Redo</button>
@@ -636,13 +649,6 @@
         </article>
         <article class="nested-slots">
             <style>
-                article.nested-slots .example
-                {
-                    display: grid;
-                    gap: 1em;
-                    grid-template-columns: 1fr 1fr;
-                    margin: 0;
-                }
                 article.nested-slots .actions
                 {
                     border: solid 1px graytext;
@@ -678,6 +684,15 @@
                 {
                     grid-column: span 2;
                     justify-self: flex-end;
+                }
+
+                @media (max-width: 665px) 
+                {
+                    article.nested-slots .controls
+                    {
+                        grid-column: 1;
+                        justify-self: flex-end;
+                    } 
                 }
 
                 article.nested-slots .log
@@ -728,11 +743,11 @@
                     border-color: highlight;
                 }
             </style>
-            <header>Nested Slots</header>
+            <h2>Nested Slots</h2>
             <p>The <code>&lt;action-history&gt;</code> element can use entries passed through from a parent element's <code>&lt;slot&gt;</code>. If the <code>&lt;action-history&gt;</code> element needs to be nested in another element, it can be populated using that element's slot functionality, rather than by writing code to handle passing the entries through to the <code>&lt;action-history&gt;</code> element.</p>
-            <p>The following methods of history navigation are available:</p>
-            <div class="example">
-                <section class="actions">
+            <p>This example places an <code>&lt;action-history&gt;</code> element inside of the custom <code>&lt;shadow-wrapper&gt;</code> element. Events are managed on the <code>&lt;shadow-wrapper&gt;</code> element, as well, via event bubbling.</p>
+            <div class="example comparison">
+                <section class="left actions">
                     <header>Actions</header>
                     <label>
                         <input type="checkbox" />
@@ -759,7 +774,7 @@
                         <button type="button" class="reverse">Reverse</button>
                     </footer>
                 </section>
-                <section class="history">
+                <section class="right history">
                     <shadow-wrapper></shadow-wrapper>
                 </section>
                 <footer class="controls">
