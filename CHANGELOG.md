@@ -1,5 +1,11 @@
 # @magnit-ce/action-history
 
+## 0.0.5
+
+### Patch Changes
+
+- 0038649: fixed issue with unknown slot order
+
 ## 0.0.4
 
 ### Patch Changes
