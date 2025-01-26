@@ -1,5 +1,11 @@
 # @magnit-ce/action-history
 
+## 0.0.7
+
+### Patch Changes
+
+- 110faf8: refactored slot handling to allow initialization with reversed entries
+
 ## 0.0.6
 
 ### Patch Changes
