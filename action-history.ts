@@ -94,7 +94,9 @@ export class ActionHistoryElement extends HTMLElement
         }
         this.#slot = slot;
         this.#slot.addEventListener('slotchange', this.#boundSlotChange);
-        this.toggleAttribute('empty', this.#slot.assignedElements().length == 0);
+        const children = this.#slot.assignedElements();
+        this.toggleAttribute('empty', children.length == 0);
+        this.#updateEntries(children);
     }
     #updateEntries(children: Element[])
     {
@@ -105,6 +107,13 @@ export class ActionHistoryElement extends HTMLElement
             activeEntry.removeAttribute(this.activeAttributeName);
             activeEntry = undefined;
         }
+
+        // to initialize a list with reversed entries, the prevent-removal
+        // attribute can be used to stop the component from removing
+        // reversed entries. This is useful for injecting stored reversed
+        // entries without the component assuming that the insertion is a
+        // new entry and trying to clear out the reversed actions.
+        const canRemoveReversedEntries = this.getAttribute('prevent-removal') == undefined;
 
         let lastChild: Element|null = null;
         for(let i = 0; i < children.length; i++)
@@ -117,12 +126,15 @@ export class ActionHistoryElement extends HTMLElement
             if(children[i].hasAttribute(this.timestampAttributeName))
             { continue; }
             
-            // if any entries have been reversed, remove them before
-            // adding a new entry
-            const toReverse = children.filter(item => item.getAttribute('data-reversed') != null);
-            for(let i = 0; i < toReverse.length; i++)
+            if(canRemoveReversedEntries == true)
             {
-                toReverse[i].remove();
+                // if any entries have been reversed, remove them before
+                // adding a new entry
+                const toReverse = children.filter(item => item.getAttribute(this.reversedAttributeName) != null);
+                for(let i = 0; i < toReverse.length; i++)
+                {
+                    toReverse[i].remove();
+                }
             }
 
             children[i].setAttribute(this.timestampAttributeName, Date.now().toString());

@@ -74,7 +74,9 @@ var ActionHistoryElement = class extends HTMLElement {
     }
     this.#slot = slot;
     this.#slot.addEventListener("slotchange", this.#boundSlotChange);
-    this.toggleAttribute("empty", this.#slot.assignedElements().length == 0);
+    const children = this.#slot.assignedElements();
+    this.toggleAttribute("empty", children.length == 0);
+    this.#updateEntries(children);
   }
   #updateEntries(children) {
     let activeEntry = children.find((item) => item.getAttribute(this.activeAttributeName) != null);
@@ -82,6 +84,7 @@ var ActionHistoryElement = class extends HTMLElement {
       activeEntry.removeAttribute(this.activeAttributeName);
       activeEntry = void 0;
     }
+    const canRemoveReversedEntries = this.getAttribute("prevent-removal") == void 0;
     let lastChild = null;
     for (let i = 0; i < children.length; i++) {
       if (children[i].getAttribute(this.entryAttributeName) == null) {
@@ -91,9 +94,11 @@ var ActionHistoryElement = class extends HTMLElement {
       if (children[i].hasAttribute(this.timestampAttributeName)) {
         continue;
       }
-      const toReverse = children.filter((item) => item.getAttribute("data-reversed") != null);
-      for (let i2 = 0; i2 < toReverse.length; i2++) {
-        toReverse[i2].remove();
+      if (canRemoveReversedEntries == true) {
+        const toReverse = children.filter((item) => item.getAttribute(this.reversedAttributeName) != null);
+        for (let i2 = 0; i2 < toReverse.length; i2++) {
+          toReverse[i2].remove();
+        }
       }
       children[i].setAttribute(this.timestampAttributeName, Date.now().toString());
       this.updateOrder(children);

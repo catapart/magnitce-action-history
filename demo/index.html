@@ -805,6 +805,30 @@
 
                 document.addEventListener('DOMContentLoaded', () =>
                 {
+                    nestedSlotsHistory.toggleAttribute('prevent-removal', true);
+                    nestedDataStore.set(nestedSlotsExample.querySelector('input[type="text"]'), "test 1");
+                    addHistoryEntry({
+                        type: 'text',
+                        value: "test 1"
+                    });
+                    nestedDataStore.set(nestedSlotsExample.querySelector('input[type="text"]'), "test 2");
+                    addHistoryEntry({
+                        type: 'text',
+                        value: "test 2"
+                    }, true);
+                    nestedDataStore.set(nestedSlotsExample.querySelector('input[type="text"]'), "test 3");
+                    addHistoryEntry({
+                        type: 'text',
+                        value: "test 3"
+                    }, true);
+
+                    // need to allow attribute to render before removing it, otherwise
+                    // the component will not update before the attribute is removed
+                    requestAnimationFrame(async () =>
+                    {
+                        nestedSlotsHistory.toggleAttribute('prevent-removal', false);
+                    });
+
                     [...nestedSlotsExample.querySelectorAll('input,select')]
                     .forEach(item => item.addEventListener('change', (event) =>
                     {
@@ -1021,12 +1045,13 @@
                     });
                 }
 
-                function addHistoryEntry(entryData)
+                function addHistoryEntry(entryData, reversed = false)
                 {
                     console.log(entryData);
                     const entryElement = document.createElement('button');
                     // this is not a good way to generate an id; works for a demo, but will collide soon.
                     entryElement.setAttribute('data-entry', Date.now().toString().substring(8));
+                    entryElement.toggleAttribute('data-reversed', reversed);
                     const codeElement = document.createElement('code');
                     entryElement.append(codeElement);
                     nestedSlotsWrapper.append(entryElement);
