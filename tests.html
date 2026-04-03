@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Automated tests for the action-history custom element">
+    <title>action-history Test Runner</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        html {
+            color-scheme: light dark;
+        }
+
+        body {
+            display: grid;
+            overflow: hidden;
+        }
+
+        svg {
+            display: none;
+        }
+    </style>
+    <noscript>
+        <style>
+            test-runner {
+                display: none;
+            }
+        </style>
+    </noscript>
+    <link rel="stylesheet" href="public/tests.theme.css">
+    <link rel="stylesheet" href="public/tests.css">
+</head>
+
+<body>
+    <header class="page-header">
+        <div class="arrows">
+            <span class="arrow">
+                <svg class="icon arrow-icon">
+                    <use href="#icon-definition_arrow"></use>
+                </svg>
+            </span>
+            <span class="arrow reverse">
+                <svg class="icon arrow-icon">
+                    <use href="#icon-definition_arrow"></use>
+                </svg>
+            </span>
+            <span class="arrow">
+                <svg class="icon arrow-icon">
+                    <use href="#icon-definition_arrow"></use>
+                </svg>
+            </span>
+        </div>
+        <div class="text">
+            <div class="breadcrumbs">
+                <a class="breadcrumb" href="https://github.com/catapart">@catapart</a>
+                <a class="breadcrumb" href="index.html">action-history</a>
+            </div>
+            <h1 class="title">Automated Testing</h1>
+        </div>
+    </header>
+    <main>
+        <test-runner>
+            <div class="message">Automated testing has not been prepared for this library.</div>
+            <action-history> <button data-entry type="button"><span class="title">Entry 1</span></button> <button data-entry type="button"><span class="title">Entry 2</span></button> <button data-entry type="button"><span class="title">Entry 3</span></button> </action-history>
+        </test-runner>
+        <noscript>
+            <div class="noscript message warn">
+                <p>This page is a dynamic test runner for a javascript library. Javascript libraries require javascript to function and cannot process at all if javascript is disbled or otherwise prevented from running.</p>
+                <p>To test the library, this page also uses custom elements designed for testing javascript code. To see the testing results and confirm the library's functionality, please enable javascript.</p>
+            </div>
+        </noscript>
+    </main>
+    <div id="icon-definitions">
+        <svg id="icon-definition_arrow" viewBox="0 0 8 8" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+            <path d="m3.26,6.81l-2.93,-4.69c-0.37,-0.58 0.05,-1.34 0.74,-1.34l5.87,0c0.69,0 1.11,0.76 0.74,1.34l-2.93,4.69c-0.35,0.55 -1.14,0.55 -1.49,0z" fill="var(--fill-color)" />
+        </svg>
+    </div>
+    <script type="module" src="public/libs/test-runner.min.js"></script>
+
+    <script type="module" src="public/libs/action-history.min.js"></script>
+</body>
+
+</html>

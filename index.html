@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Introduction to the action-history custom element">
+    <title>action-history Introduction</title>
+    <style>
+        svg {
+            display: none;
+        }
+    </style>
+    <link rel="stylesheet" href="./public/introduction.theme.css">
+    <link rel="stylesheet" href="./public/index.css">
+
+    <noscript>
+        <style>
+            code-example {
+                display: none;
+            }
+        </style>
+    </noscript>
+</head>
+
+<body>
+    <main class="centered-single-column">
+        <header class="page-header full-width">
+            <div class="content centered-single-column">
+                <div class="arrows">
+                    <span class="arrow">
+                        <svg class="icon arrow-icon">
+                            <use href="#icon-definition_arrow"></use>
+                        </svg>
+                    </span>
+                    <span class="arrow reverse">
+                        <svg class="icon arrow-icon">
+                            <use href="#icon-definition_arrow"></use>
+                        </svg>
+                    </span>
+                    <span class="arrow">
+                        <svg class="icon arrow-icon">
+                            <use href="#icon-definition_arrow"></use>
+                        </svg>
+                    </span>
+                    <span class="arrow reverse">
+                        <svg class="icon arrow-icon">
+                            <use href="#icon-definition_arrow"></use>
+                        </svg>
+                    </span>
+                    <span class="arrow">
+                        <svg class="icon arrow-icon">
+                            <use href="#icon-definition_arrow"></use>
+                        </svg>
+                    </span>
+                </div>
+                <div class="text">
+                    <div class="breadcrumbs">
+                        <a class="breadcrumb" href="https://github.com/catapart">@catapart</a>
+                    </div>
+                    <h1 class="title">action-history</h1>
+                    <div class="repos">
+                        <a class="repo github" title="Repository" href="https://github.com/catapart/magnitce-action-history">
+                            <svg xmlns="http://www.w3.org/2000/svg" aria-label="GitLab" role="img" class="icon gitlab" width="24" height="24" viewBox="0 0 512 512">
+                                <path d="m0 0H512V512H0" fill="#fff" />
+                                <path fill="#e24329" d="m71 222 52-136c5-12 21-12 26 0l35.5 109h143L363 86c5-12 21-12 26 0l52 136-185 120" />
+                                <path fill="#fca326" d="m244 442q12 10 24 0l61-46V340.8H183V396" />
+                                <path fill="#fc6d26" d="m103 336A97 97 0 0171 222q37 8 65 28l193 146 80-60a97 97 0 0032-114q-37 8-65 28L183 396" />
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" aria-label="GitHub" role="img" class="icon github" width="24" height="24" viewBox="0 0 512 512">
+                                <path d="m0 0H512V512H0" fill="#181717"></path>
+                                <path fill="#fff" d="M335 499c-13 0-16-6-16-12l1-70c0-24-8-40-18-48 57-6 117-28 117-126 0-28-10-51-26-69 3-6 11-32-3-67 0 0-21-7-70 26-42-12-86-12-128 0-49-33-70-26-70-26-14 35-6 61-3 67-16 18-26 41-26 69 0 98 59 120 116 126-7 7-14 18-16 35-15 6-52 17-74-22 0 0-14-24-40-26 0 0-25 0-1 16 0 0 16 7 28 37 0 0 15 50 86 34l1 44c0 6-3 12-16 12-14 0-12 17-12 17H347s2-17-12-17Z"></path>
+                            </svg>
+                        </a>
+                    </div>
+                    <div class="actions">
+                        <a href="./tests.html">Test Runner</a>
+                        <a href="./docs/">Documentation</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <noscript>
+            <div class="noscript message warn">
+                <p>This page is an introduction to a custom html element that includes dynamic and interactive content. Custom html elements require javascript to function and cannot be rendered at all if javascript is disbled or otherwise prevented from running.</p>
+                <p>To demonstrate the custom element, this page also uses a custom element designed for showcasing examples of code. To see the custom element in action, as well as formatted example code and previews of how the custom element can be used, please enable javascript.</p>
+            </div>
+        </noscript>
+        <article class="overview">
+            <header>
+                <svg class="icon info-icon">
+                    <use href="#icon-definition_info"></use>
+                </svg>
+                <h2>Overview</h2>
+            </header>
+            <section class="page">
+                <header>
+                    <h3>Introduction</h3>
+                </header>
+                <p>This page is an introduction to the <code>action-history</code> custom element. It provides a description of the library and acts as a reference for documentation and examples.</p>
+            </section>
+            <section class="element">
+                <header>
+                    <h3>Custom Element</h3>
+                </header>
+                <p>The <code>&lt;action-history&gt;</code> element provides an interface with interactive controls for a "History" system.</p>
+                <p>This element is a helper for implementing an "Undo" feature. The term "History system" is used to describe the abstract version of an "Undo" feature which includes "Redo" functionality as well as direct-point-in-history access.</p>
+                <p>The <code>&lt;action-history&gt;</code> element is intended to facilitate history functionality by both providing an interactive, timestamped ledger of the actions taken, and dispatching events to indicate the user's intention to undo or redo their actions.</p>
+
+            </section>
+            <section class="install">
+                <header>
+                    <h3>Installation</h3>
+                </header>
+                <p>This library is available as a <a href="https://cdn.jsdelivr.net/npm/@magnit-ce/action-history">single file</a> that can be referenced using a <code>&lt;script&gt;</code> element. It can also be installed using any of the javascript package managers below:</p>
+            </section>
+            <div class="install-component">
+                <code-example id="install-example" class="stack npm" preview="false">
+                    <span class="code-badge" slot="code-badge">
+                        <span class="badge npm"></span>
+                        <span class="badge bun"></span>
+                        <span class="badge pnpm"></span>
+                        <span class="badge deno"></span>
+                        <span class="badge yarn"></span>
+                    </span>
+                    <span class="code-title" slot="code-title">
+                        <span class="title option npm">npm</span>
+                        <span class="title option bun">bun</span>
+                        <span class="title option pnpm">pnpm</span>
+                        <span class="title option deno">deno</span>
+                        <span class="title option yarn">yarn</span>
+                    </span>
+                    <code slot>
+                        npm install @magnit-ce/action-history
+                    </code>
+                </code-example>
+                <script>
+                    const options = ['npm', 'bun', 'pnpm', 'deno', 'yarn'];
+                    const scripts = ['npm install @magnit-ce/action-history', 'bun add @magnit-ce/action-history', 'pnpm install @magnit-ce/action-history', 'deno install npm:@magnit-ce/action-history', 'yarn add @magnit-ce/action-history'];
+                    document.addEventListener('DOMContentLoaded', () => {
+                        const installExample = document.getElementById('install-example');
+                        installExample.addEventListener('click', (event) => {
+                            const composedPath = event.composedPath();
+                            const title = composedPath.find(item => item instanceof HTMLElement && item.classList.contains('option'));
+                            if (title != null) {
+
+                                installExample.classList.remove(...options);
+                                for (let i = 0; i < options.length; i++) {
+                                    if (title.classList.contains(options[i])) {
+                                        installExample.classList.add(options[i]);
+                                        installExample.replaceSource(scripts[i]);
+                                        break;
+                                    }
+                                }
+                            }
+                        });
+                    });
+                </script>
+                <noscript class="centered-single-column">
+                    <dl>
+                        <dt>npm</dt>
+                        <dd><textarea>npm install @magnit-ce/action-history</textarea></dd>
+                        <dt>bun</dt>
+                        <dd><textarea>bun add @magnit-ce/action-history</textarea></dd>
+                        <dt>pnpm</dt>
+                        <dd><textarea>pnpm install @magnit-ce/action-history</textarea></dd>
+                        <dt>deno</dt>
+                        <dd><textarea>deno install npm:@magnit-ce/action-history</textarea></dd>
+                        <dt>yarn</dt>
+                        <dd><textarea>yarn add @magnit-ce/action-history</textarea></dd>
+                        </ul>
+                </noscript>
+            </div>
+        </article>
+        <div class="documentation">
+            <header>
+                <h2>Documentation</h2>
+            </header>
+            <div class="docs-info card horizontal element">
+                <header>
+                    <svg class="icon docs-icon">
+                        <use href="#icon-definition_book-library"></use>
+                    </svg>
+                    <h3>Custom Element Documentation</h3>
+                </header>
+                <div class="description">
+                    <p>Use the custom element documentation to learn more about how to integrate the <code>action-history</code> element into an html project.</p>
+                    <p>Follow the README link to view the library's repository page and get a look at the source directly.</p>
+                    <div class="actions">
+                        <a href="https://github.com/catapart/magnitce-action-history">See the library's README</a>
+                        <a class="button-link" href="./docs/">View Library Documentation</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <article class="quick-reference">
+            <header>
+                <svg class="icon reference-icon">
+                    <use href="#icon-definition_pin"></use>
+                </svg>
+                <h2>Quick Reference</h2>
+            </header>
+            <section class="quick-start">
+                <header>
+                    <h3>Quick Start Snippet</h3>
+                </header>
+                <p>Copy the code from this example and paste it into your project to have a simple starting point for working with this library.</p>
+            </section>
+            <code-example class="stack" preview="false">
+                <code slot class="language-html">
+                    <action-history reverse> <button type="button" data-entry>Entry 1</button> <button type="button" data-entry>Entry 2</button> <button type="button" data-entry>Entry 3</button> </action-history>
+                </code>
+            </code-example>
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    const codeExample = document.querySelector('.quick-reference code-example');
+                    codeExample.injectScriptElementToHTMLExample("https://cdn.jsdelivr.net/npm/@magnit-ce/action-history", 'module', 3);
+                });
+            </script>
+            <noscript>
+                <div class="source html">
+                    <header>
+                        <h5>HTML</h5>
+                    </header>
+                    <textarea spellcheck="false" class="html"><action-history reverse>     <button type="button" data-entry>Entry 1</button>     <button type="button" data-entry>Entry 2</button>     <button type="button" data-entry>Entry 3</button> </action-history></textarea>
+                </div>
+            </noscript>
+            <section class="reference-tables">
+                <h3>Quick Reference Tables</h3>
+                <p>Use the tables, below, to reference the key identifiers used by this custom element, including event types, attribute keys, slot names, and css properties.</p>
+            </section>
+            <details class="reference events">
+                <summary class="title">
+                    <svg class="icon arrow-icon">
+                        <use href="#icon-definition_arrow"></use>
+                    </svg>
+                    <h4>Events</h4>
+                </summary>
+                <div class="message">
+                    <p>This custom element does not dispatch any events.</p>
+                </div>
+            </details>
+            <details class="reference attributes">
+                <summary class="title">
+                    <svg class="icon arrow-icon">
+                        <use href="#icon-definition_arrow"></use>
+                    </svg>
+                    <h4>Attributes</h4>
+                </summary>
+                <div class="message">
+                    <p>This custom element does not reference any attributes.</p>
+                </div>
+            </details>
+            <details class="reference slots">
+                <summary class="title">
+                    <svg class="icon arrow-icon">
+                        <use href="#icon-definition_arrow"></use>
+                    </svg>
+                    <h4>Slots</h4>
+                </summary>
+                <div class="message">
+                    <p>This custom element does not expose any slots.</p>
+                </div>
+            </details>
+            <details class="reference parts">
+                <summary class="title">
+                    <svg class="icon arrow-icon">
+                        <use href="#icon-definition_arrow"></use>
+                    </svg>
+                    <h4>Parts</h4>
+                </summary>
+                <div class="message">
+                    <p>This custom element does not expose any parts.</p>
+                </div>
+            </details>
+            <details class="reference classes">
+                <summary class="title">
+                    <svg class="icon arrow-icon">
+                        <use href="#icon-definition_arrow"></use>
+                    </svg>
+                    <h4>CSS Classes</h4>
+                </summary>
+                <div class="message">
+                    <p>This library does not apply or expect any classes.</p>
+                </div>
+            </details>
+            <details class="reference properties">
+                <summary class="title">
+                    <svg class="icon arrow-icon">
+                        <use href="#icon-definition_arrow"></use>
+                    </svg>
+                    <h4>CSS Properties</h4>
+                </summary>
+                <div class="message">
+                    <p>This custom element does not expose any object properties.</p>
+                </div>
+            </details>
+            <details class="reference configs">
+                <summary class="title">
+                    <svg class="icon arrow-icon">
+                        <use href="#icon-definition_arrow"></use>
+                    </svg>
+                    <h4>Configs</h4>
+                </summary>
+                <div class="message">
+                    <p>This library does not expose any configuration objects.</p>
+                </div>
+            </details>
+            <details class="reference enumerators">
+                <summary class="title">
+                    <svg class="icon arrow-icon">
+                        <use href="#icon-definition_arrow"></use>
+                    </svg>
+                    <h4>Enumerators</h4>
+                </summary>
+                <div class="message">
+                    <p>This library does not expose any enumerators.</p>
+                </div>
+            </details>
+            <details class="reference constants">
+                <summary class="title">
+                    <svg class="icon arrow-icon">
+                        <use href="#icon-definition_arrow"></use>
+                    </svg>
+                    <h4>Constants</h4>
+                </summary>
+                <div class="message">
+                    <p>This library does not expose any constants.</p>
+                </div>
+            </details>
+            <details class="reference assignments">
+                <summary class="title">
+                    <svg class="icon arrow-icon">
+                        <use href="#icon-definition_arrow"></use>
+                    </svg>
+                    <h4>Assignments</h4>
+                </summary>
+                <div class="message">
+                    <p>This library does not use any values directly from source code to assign values, properties, or attributes.</p>
+                </div>
+            </details>
+        </article>
+        <div class="examples">
+            <header>
+                <h2>Examples</h2>
+            </header>
+            <div class="card horizontal">
+                <header>
+                    <svg class="icon example-icon">
+                        <use href="#icon-definition_example"></use>
+                    </svg>
+                </header>
+                <div class="description">
+                    <p>These examples are provided as simple references for practical use cases.</p>
+                    <p>For specific details and feature maps, see the <a href="./documentation/">documentation</a>.</p>
+                </div>
+            </div>
+            <div class="example placeholder">
+                <header>
+                    <h3>Example Placholder</h3>
+                </header>
+                <div class="description">
+                    <div class="filler"></div>
+                    <div class="text">
+                        <p>This is provided as an example of using the snippet. It will be overriden when you provide examples in your package file.</p>
+                        <p>HTML content is allowed, but it needs to be escaped for JSON.</p>
+                    </div>
+                </div>
+                <div class="escaped-example"><em>Escaped HTML will be injected</em></div> <noscript> </noscript>
+            </div>
+        </div>
+        <article class="questions-answers">
+            <header>
+                <svg class="icon question-icon">
+                    <use href="#icon-definition_question"></use>
+                </svg>
+                <h2>Questions &amp; Answers</h2>
+            </header>
+            <details class="qa-pair placeholder">
+                <summary class="question"> <svg class="icon arrow-icon">
+                        <use href="#icon-definition_arrow"></use>
+                    </svg> <span class="value">Placeholder Question</span> </summary>
+                <div class="answer">
+                    <div class="simple"> <span class="label">Simplified:</span> <span class="value">
+                            <p>This is provided as an example of using the snippet. It will be overriden when you provide examples in your package file.</p>
+                            <p>HTML content is allowed, but it needs to be escaped for JSON.</p>
+                        </span> </div>
+                    <div class="more">
+                        <header>
+                            <h5>Details</h5>
+                        </header>
+                        <div class="escaped-example"><em>Escaped HTML will be injected</em></div>
+                    </div>
+                </div>
+            </details>
+        </article>
+        <footer class="full-width">
+            <div id="footer-content">
+                <div id="version">
+                    <a href="https://github.com/catapart/magnitce-action-history/releases">Releases</a>
+                </div>
+                <div id="license">
+                    License:
+                    <a id="cc0-link" class="link copyright-link" href="https://creativecommons.org/publicdomain/zero/1.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;"> CC0 1.0 <img id="cc-icon" class="icon raster" style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1" alt="Creative Commons Icon"> <img id="zero-icon" class="icon raster" style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/zero.svg?ref=chooser-v1" alt="Zero Icon"> </a>
+                </div>
+            </div>
+        </footer>
+    </main>
+    <div id="icon-definitions">
+        <svg id="icon-definition_arrow" viewBox="0 0 8 8" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+            <path d="m3.26,6.81l-2.93,-4.69c-0.37,-0.58 0.05,-1.34 0.74,-1.34l5.87,0c0.69,0 1.11,0.76 0.74,1.34l-2.93,4.69c-0.35,0.55 -1.14,0.55 -1.49,0z" fill="var(--fill-color)" />
+        </svg>
+        <svg id="icon-definition_book-app" class="icon book app" viewBox="0 0 22.812714 22.814663" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+            <rect style="display:inline;fill:var(--fill-color,currentcolor);fill-opacity:1;stroke:none;stroke-width:1.00599;stroke-linecap:square;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1" width="17.741205" height="14.561453" x="-0.29297206" y="-19.925879" rx="1.1331379" ry="1.1459208" transform="matrix(0,1,-0.98811636,-0.15370773,0,0)" />
+            <path style="baseline-shift:baseline;display:inline;overflow:visible;opacity:1;vector-effect:none;fill:var(--fill-color-secondary,canvas);stroke-linecap:square;enable-background:accumulate;stop-color:#000000;stop-opacity:1" d="m 1.0963877,-4.5723639 c 0.047917,0.2961138 0.255269,0.5175469 0.5051882,0.5175469 H 1.8351533 L 1.5670258,-16.138434 c -0.00323,-0.145473 0.019831,-0.284671 0.065122,-0.412568 -0.027693,-0.360029 -0.077825,-0.72937 -0.1444215,-1.086009 -0.2303355,0.06501 -0.401732,0.322524 -0.401732,0.632499 l 3.042e-4,12.3009242 c 0,0.044919 0.00324,0.088922 0.010089,0.1312239 z" transform="matrix(0,1,-0.98450913,-0.17533331,0,0)" />
+            <path style="display:inline;fill:var(--fill-color-secondary,canvas);stroke-width:1.0074;stroke-linecap:square" d="m 0.28357095,-6.3186304 c 0.0479172,0.2639903 0.25567408,0.4615202 0.50559324,0.4615202 h 0.0733805 L 0.91643734,-16.98971 c 0.002266,-0.466444 0.31630196,-0.89944 0.77205986,-0.89944 h 0.1054199 l 0.00157,-0.09073 H 0.78883272 c -0.2856219,0 -0.51521518,0.258103 -0.51521518,0.578474 l -1.8299e-4,10.9658232 c 0,0.040046 0.003291,0.079241 0.0101364,0.1169534 z M 1.3663899,-5.8571102 H 1.5508748 L 1.7837036,-17.385674 h -0.097668 c -0.115486,0 -0.26453,0.1443 -0.2657525,0.395964 z" transform="matrix(0,1,-0.98533641,-0.1706229,0,0)" />
+            <path style="display:inline;fill:var(--fill-color,canvastext);fill-opacity:1;stroke:none;stroke-width:1.00599;stroke-linecap:square;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1" d="m -0.30349159,-17.732133 0.91168722,0.162123 0.0109321,-0.446624 c 0.0144307,-0.563986 0.066013,-0.893959 0.11748843,-1.091458 0.0514759,-0.197499 0.0931064,-0.256062 0.15312274,-0.375499 0.0904101,-0.17992 0.1709412,-0.267002 0.2158924,-0.303328 l 8.04e-5,5.23e-4 -4.364e-4,5.23e-4 8.04e-5,5.23e-4 c 0.00462,0.01978 0.1534427,0.148038 0.2998155,0.478003 0.2911988,0.656443 0.5370337,1.776279 0.5941892,2.816766 -0.048129,0.12743 -0.074276,0.26612 -0.074276,0.411062 l 2.617e-4,12.2696154 c 0,0.6348401 0.504898,1.1458475 1.1326564,1.1458475 H 18.533027 c 0.627758,0 1.133355,-0.5110074 1.133355,-1.1458475 L 19.66612,-16.079519 c 0,-0.215016 -0.05794,-0.415732 -0.159003,-0.587306 -0.120007,-1.292764 -0.610998,-2.570315 -1.231337,-3.367986 -0.180344,-0.231899 -0.37598,-0.433304 -0.636665,-0.571616 -0.203637,-0.108044 -0.469942,-0.151135 -0.696484,-0.09675 l -15.7760222,-0.0016 c -0.23097345,-0.0492 -0.47220012,0.0066 -0.64208529,0.126038 -0.19267985,0.135456 -0.33179269,0.331646 -0.4621017,0.590966 -0.03744804,0.07452 -0.13702133,0.249174 -0.20974851,0.528209 -0.072727,0.279036 -0.12947122,0.670318 -0.14503757,1.278684 z" transform="matrix(0,1,-0.98811636,-0.15370773,0,0)" />
+            <path style="baseline-shift:baseline;display:inline;overflow:visible;opacity:1;vector-effect:none;fill:var(--fill-color,canvastext);stroke-linecap:square;enable-background:accumulate;stop-color:#000000;stop-opacity:1" d="M 0.84846862 -4.5303723 C 0.91438402 -4.1346435 1.2025211 -3.8028672 1.6013093 -3.8028672 L 1.841088 -3.8028672 C 1.8408086 -3.8098945 1.8406639 -3.8168047 1.8405073 -3.8238631 L 1.8297355 -4.3067668 L 1.6013256 -4.3067668 C 1.4858396 -4.3067668 1.3380551 -4.4511886 1.3380551 -4.7030629 L 1.3377509 -17.003987 C 1.3377509 -17.206775 1.4338596 -17.339773 1.5315692 -17.384011 C 1.5041116 -17.553345 1.4726868 -17.721066 1.4380866 -17.884761 C 1.0727908 -17.795627 0.83390571 -17.41266 0.83390571 -17.003987 L 0.8342099 -4.7030629 C 0.8342099 -4.6447084 0.83905213 -4.586905 0.84846862 -4.5303723 z " transform="matrix(0,1,-0.98450913,-0.17533331,0,0)" />
+            <rect style="display:inline;fill:var(--fill-color-secondary,canvas);fill-opacity:1;stroke:none;stroke-width:1.00702;stroke-linecap:square;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1" width="16.367279" height="11.785467" x="2.6231859" y="-15.15197" rx="0.52113724" ry="0.56219465" transform="matrix(0,1,-0.98607529,-0.16629947,0,0)" />
+            <rect style="display:inline;fill:var(--fill-color,canvastext);fill-opacity:1;stroke:var(--fill-color-secondary,canvas);stroke-width:0;stroke-linecap:square;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1" width="10.339652" height="11.686592" x="4.0762296" y="4.8322234" rx="0.66039765" ry="0.9196822" transform="matrix(0.97614628,0.21711388,0,1,0,0)" />
+            <path style="display:inline;fill:var(--fill-color-secondary,canvas);fill-opacity:1;stroke:none;stroke-width:0;stroke-linecap:square;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1" d="M 5.5356719,5.5307756 A 0.41333571,0.53940041 20.314041 0 0 5.105337,6.139892 0.41333571,0.53940041 20.314041 0 0 5.5356719,6.5668881 0.41333571,0.53940041 20.314041 0 0 5.9665355,5.958177 0.41333571,0.53940041 20.314041 0 0 5.5356719,5.5307756 Z M 5.1042796,7.1870796 C 4.9659003,7.2073352 4.8584495,7.3759151 4.8584495,7.5820819 v 7.5277061 c 0,0.219911 0.1221877,0.396969 0.2738495,0.396969 l 8.050541,-7.9e-5 c 0.151661,0 0.27332,-0.177274 0.27332,-0.397185 V 7.5823034 c 0,-0.2199113 -0.121659,-0.3970812 -0.27332,-0.3970812 l -8.050541,7.94e-5 c -0.00948,0 -0.018794,4.276e-4 -0.028019,0.00178 z" transform="matrix(0.97748554,0.21100244,0,1,0,0)" />
+        </svg>
+        <svg id="icon-definition_example" class="icon example" viewBox="0 0 22.812714 22.814663" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+            <rect style="fill:var(--fill-color,currentcolor);fill-opacity:1;stroke:var(--fill-color-secondary,canvas);stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" width="21.619646" height="15.478044" x="0.61942202" y="1.2595599" rx="0.57721627" ry="0.34964898" />
+            <path style="fill:var(--fill-color-secondary,canvas);stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1" d="m 12.993696,5.570294 h 7.843146 c 0.141301,0 0.255054,0.1146956 0.255054,0.2571596 v 9.4508574 c 0,0.142469 -0.113753,0.25716 -0.255054,0.25716 h -7.843146 c -0.141297,0 -0.255049,-0.114691 -0.255049,-0.25716 V 5.8274536 c 0,-0.142464 0.113752,-0.2571596 0.255049,-0.2571596 z" />
+            <path style="color:#000000;fill:var(--fill-color,currentcolor);fill-opacity:1;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;-inkscape-stroke:none" d="m 13.987665,6.4999256 c -0.141296,0 -0.254957,0.114608 -0.254957,0.257068 v 2.197536 c 0,0.142469 0.113661,0.257067 0.254957,0.257067 h 2.900349 c 0.141297,0 0.254962,-0.114598 0.254962,-0.257067 v -2.197536 c 0,-0.14246 -0.113665,-0.257068 -0.254962,-0.257068 z m 4.276914,0.193421 c -0.272649,6.3e-5 -0.493478,0.223046 -0.493319,0.497945 5.3e-5,0.274758 0.22083,0.497327 0.493319,0.49739 h 1.485415 c 0.272649,1.27e-4 0.493807,-0.2225 0.49386,-0.49739 1.06e-4,-0.275035 -0.22111,-0.498077 -0.49386,-0.497945 z m 0.04762,1.581625 c -0.272649,6.4e-5 -0.493478,0.223046 -0.493324,0.497946 5.3e-5,0.274757 0.220835,0.497326 0.493324,0.497389 h 1.48541 c 0.272649,1.27e-4 0.493817,-0.2225 0.49387,-0.497389 1.06e-4,-0.275036 -0.221114,-0.498077 -0.49387,-0.497946 z m -4.369154,1.6474647 c -0.272648,6.4e-5 -0.493449,0.2230457 -0.493323,0.4979457 7.2e-5,0.274762 0.22081,0.497331 0.493323,0.497394 h 5.94354 c 0.272644,1.27e-4 0.493802,-0.2225 0.493869,-0.497394 1.26e-4,-0.275036 -0.22108,-0.4980717 -0.493869,-0.4979457 z m 0,1.7204447 c -0.272644,6.3e-5 -0.493449,0.223051 -0.493323,0.49794 6.2e-5,0.274763 0.22081,0.497609 0.493323,0.497672 h 5.94354 c 0.272648,1.32e-4 0.493807,-0.222773 0.493869,-0.497672 1.26e-4,-0.275026 -0.221085,-0.498067 -0.493869,-0.49794 z m 0,1.721813 c -0.272513,6.4e-5 -0.493261,0.22291 -0.493323,0.497673 6.2e-5,0.274758 0.22081,0.497326 0.493323,0.49739 h 5.94354 c 0.272648,1.26e-4 0.493807,-0.222491 0.493869,-0.49739 -6.2e-5,-0.274899 -0.221221,-0.497799 -0.493869,-0.497673 z" />
+            <path style="fill:var(--fill-color,currentcolor);fill-opacity:1;stroke:var(--fill-color-secondary,canvas);stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000" d="m 8.3661494,3.1061241 c -0.016886,-0.012205 -0.036968,-0.00326 -0.05424,0.01094 L 7.2899722,3.9582467 A 3.2183063,3.2183247 0.00364854 0 0 6.8680501,3.8552265 L 6.3337535,2.648223 C 6.3282135,2.63541 6.3203325,2.624224 6.3104725,2.618268 6.3046325,2.614588 6.2975375,2.613388 6.2898925,2.614458 L 5.0226844,2.8190007 c -0.020471,0.00337 -0.028363,0.023708 -0.030337,0.045967 L 4.8665706,4.1616928 A 3.2183063,3.2183247 0.00364854 0 0 4.4722388,4.4001296 L 3.2619199,3.9327498 c -0.020849,-0.00806 -0.042682,-0.00994 -0.05488,0.00699 L 2.4558361,4.9804297 c -0.012203,0.016886 -0.00358,0.037059 0.01064,0.054283 l 0.806825,0.9799585 A 3.2183063,3.2183247 0.00364854 0 0 3.1537852,6.5010046 L 1.9978275,7.0130165 c -0.020351,0.00896 -0.037072,0.023261 -0.03382,0.043755 l 0.2048732,1.267155 c 0.00338,0.020508 0.023575,0.028535 0.045682,0.03073 l 1.2410188,0.1202231 a 3.2183063,3.2183247 0.00364854 0 0 0.274691,0.4502169 L 3.282479,10.084899 c -0.00806,0.02085 -0.010262,0.04268 0.00669,0.05492 l 1.0408652,0.751344 c 0.016886,0.0122 0.036968,0.0033 0.054243,-0.01094 l 0.959804,-0.790207 a 3.2183063,3.2183247 0.00364854 0 0 0.5134274,0.118683 l 0.5049195,1.140367 c 0.00896,0.02035 0.023563,0.03679 0.043755,0.03382 l 1.2668744,-0.204489 3.316e-4,-5.2e-5 c 0.020528,-0.0034 0.028442,-0.02389 0.030488,-0.04615 L 7.8259104,9.8741383 a 3.2183063,3.2183247 0.00364854 0 0 0.4240974,-0.266762 l 1.1841544,0.4572317 c 0.020849,0.0081 0.042681,0.0099 0.05488,-0.007 L 10.240246,9.0169186 c 0.0122,-0.01689 0.0036,-0.03702 -0.01064,-0.05428 L 9.4065472,7.962809 A 3.2183063,3.2183247 0.00364854 0 0 9.5088351,7.5112308 L 10.698256,6.9843366 c 0.02035,-0.00896 0.03706,-0.023257 0.03381,-0.04375 L 10.527394,5.6735587 10.5272,5.6734245 C 10.5239,5.6528435 10.50368,5.6449065 10.48152,5.6426995 L 9.168338,5.5155255 A 3.2183063,3.2183247 0.00364854 0 0 8.9370584,5.1467698 L 9.413583,3.9124628 c 0.00806,-0.020851 0.010262,-0.042683 -0.00669,-0.05492 z" />
+            <path style="fill:var(--fill-color-secondary,canvas);stroke-width:0.25;stroke-linecap:round;stroke-linejoin:round;stop-color:#000000" d="M 7.3250684,6.4344351 A 1.1281789,1.1281851 0 0 1 6.9121263,7.9755643 1.1281789,1.1281851 0 0 1 5.3710055,7.56262 1.1281789,1.1281851 0 0 1 5.7839476,6.021491 1.1281789,1.1281851 0 0 1 7.3250684,6.4344351 Z" />
+            <path style="fill:none;stroke:var(--fill-color-secondary,canvas);stroke-width:0.6;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1;stroke-dasharray:none" d="m 10.498954,11.703787 c -0.373415,-0.004 -0.6815857,0.564693 -0.6815857,0.564693 l 0.8679207,0.575692 c 0,0 0.487624,-0.769312 0.02631,-1.071865 -0.07213,-0.04717 -0.143517,-0.06771 -0.212671,-0.06844 z M 9.7995175,12.449852 C 9.5930208,12.434924 9.2737459,12.75321 9.033669,13.233708 L 6.5320891,18.240586 C 6.2577084,18.789728 6.1937794,19.336413 6.388514,19.466327 L 6.9762413,19.85846 C 7.17098,19.988379 7.5487119,19.650833 7.8230885,19.10169 l 2.5015835,-5.006667 c 0.274377,-0.549143 0.338503,-1.095827 0.143765,-1.225741 L 9.8805203,12.477144 c -0.024338,-0.01622 -0.051513,-0.02516 -0.081007,-0.02726 z m -3.6000647,7.066856 c 0,0 -0.1631196,0.958422 -0.026312,1.07208 0.1368204,0.113667 0.8942533,-0.496263 0.8942533,-0.496263 z" />
+            <path style="fill:var(--fill-color,currentcolor);stroke-width:2;stroke-linecap:round;stroke-linejoin:round" d="m 9.8805367,12.477059 0.5878543,0.392183 c 0.194739,0.129918 0.130625,0.676598 -0.143751,1.22574 L 7.8230597,19.101681 C 7.5486831,19.650824 7.171017,19.988321 6.9762783,19.858402 L 6.3884236,19.466224 C 6.1936889,19.336305 6.2577988,18.789626 6.5321754,18.240483 L 9.0337553,13.233784 C 9.3081319,12.684642 9.685798,12.347145 9.8805367,12.477059 Z" />
+            <path style="fill:var(--fill-color,currentcolor);fill-opacity:1;stroke:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none" d="m 6.1994652,19.51678 0.867917,0.575647 c 0,0 -0.7574001,0.609979 -0.8942286,0.49632 -0.1368245,-0.113658 0.026312,-1.071967 0.026312,-1.071967 z" />
+            <path style="fill:var(--fill-color,currentcolor);fill-opacity:1;stroke:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none" d="M 10.68524,12.844136 9.8173313,12.26848 c 0,0 0.4328917,-0.798879 0.8942207,-0.496321 0.461328,0.302553 -0.02631,1.071977 -0.02631,1.071977 z" />
+        </svg>
+        <svg id="icon-definition_info" class="icon info" viewBox="0 0 22.812714 22.814663" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+            <path style="fill:var(--fill-color,currentcolor);stroke:var(--fill-color-secondary,canvas);stroke-width:0.999999;stroke-linejoin:round;stroke-miterlimit:6.3;stroke-dasharray:none;stroke-dashoffset:29.2913;stroke-opacity:1" d="M 22.295505,11.407332 A 10.889144,10.889144 0 0 1 11.406424,22.296479 10.889144,10.889144 0 0 1 0.51720881,11.407332 10.889144,10.889144 0 0 1 11.406424,0.51818382 10.889144,10.889144 0 0 1 22.295505,11.407332 Z" />
+            <path d="m 13.945668,4.3053761 c 0.150778,-0.96462 -0.30687,-1.43709 -1.36997,-1.43709 -1.063,0 -1.668452,0.47247 -1.81923,1.43709 -0.150779,0.96462 0.306971,1.43708 1.369971,1.43708 1.004,0 1.66845,-0.47246 1.819229,-1.43708 z M 11.693889,17.829726 13.373994,7.0811161 h -2.9333 L 8.7605887,17.829726 Z" style="font-size:19.6861px;font-family:Passageway;-inkscape-font-specification:Passageway;fill:var(--fill-color-secondary,canvas);stroke-width:2.5;stroke-linejoin:round;stroke-miterlimit:6.3;stroke-dashoffset:29.2913" aria-label="i" />
+        </svg>
+        <svg id="icon-definition_question" class="icon question" viewBox="0 0 22.812714 22.814663" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+            <path style="fill:var(--fill-color,currentcolor);stroke:var(--fill-color-secondary,canvas);stroke-width:0.999999;stroke-linejoin:round;stroke-miterlimit:6.3;stroke-dasharray:none;stroke-dashoffset:29.2913;stroke-opacity:1" d="M 22.295505,11.407332 A 10.889144,10.889144 0 0 1 11.406424,22.296479 10.889144,10.889144 0 0 1 0.51720881,11.407332 10.889144,10.889144 0 0 1 11.406424,0.51818382 10.889144,10.889144 0 0 1 22.295505,11.407332 Z" />
+            <path d="m 13.945668,4.3053761 c 0.150778,-0.96462 -0.30687,-1.43709 -1.36997,-1.43709 -1.063,0 -1.668452,0.47247 -1.81923,1.43709 -0.150779,0.96462 0.306971,1.43708 1.369971,1.43708 1.004,0 1.66845,-0.47246 1.819229,-1.43708 z M 11.693889,17.829726 13.373994,7.0811161 h -2.9333 L 8.7605887,17.829726 Z" style="font-size:19.6861px;font-family:Passageway;-inkscape-font-specification:Passageway;display:none;fill:var(--fill-color-secondary,canvas);stroke-width:2.5;stroke-linejoin:round;stroke-miterlimit:6.3;stroke-dashoffset:29.2913" />
+            <path style="font-weight:800;font-size:22.5778px;font-family:'Ubuntu Sans';-inkscape-font-specification:'Ubuntu Sans Ultra-Bold';fill:var(--fill-color-secondary,canvas);stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round" d="M 9.3291995,14.274712 Q 9.2840435,14.048934 9.2614665,13.778 q 0,-0.293511 0,-0.496711 0,-0.92569 0.3160892,-1.603024 0.3386666,-0.699912 0.8128013,-1.264357 0.496712,-0.5644441 0.970846,-1.0385781 0.496711,-0.474134 0.8128,-0.948268 0.338667,-0.474134 0.338667,-0.993423 0,-0.541867 -0.428978,-0.9256897 -0.4064,-0.3838226 -1.219201,-0.3838226 -0.812801,0 -1.5352911,0.2032002 -0.72249,0.2032002 -1.6030243,0.6547561 L 6.777908,4.4307915 Q 7.6584422,3.8663465 8.8550657,3.5728351 10.051689,3.2567459 11.203157,3.2567459 q 1.444979,0 2.370669,0.3838226 0.948268,0.3612448 1.490135,0.9708454 0.541867,0.6096006 0.745067,1.3095125 0.225778,0.677334 0.225778,1.3095125 0,0.948267 -0.383822,1.670757 -0.383823,0.699912 -0.948268,1.2869341 -0.541867,0.587023 -1.106312,1.12889 -0.541867,0.519289 -0.92569,1.083734 -0.383823,0.564445 -0.383823,1.286935 0,0.09031 0,0.270934 0,0.180622 0.02258,0.316089 z m 1.5352905,5.283205 q -0.812801,0 -1.4675571,-0.541867 -0.6321784,-0.541867 -0.6321784,-1.53529 0,-0.993424 0.6321784,-1.535291 0.6547561,-0.541867 1.4675571,-0.541867 0.812801,0 1.444979,0.541867 0.654757,0.541867 0.654757,1.535291 0,0.993423 -0.654757,1.53529 -0.632178,0.541867 -1.444979,0.541867 z" aria-label="?" />
+        </svg>
+        <svg id="icon-definition_book-library" class="icon book library" viewBox="0 0 22.812714 22.814663" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+            <rect style="display:inline;fill:var(--fill-color,currentcolor);fill-opacity:1;stroke:none;stroke-width:1.00599;stroke-linecap:square;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1" width="17.741205" height="14.561453" x="-0.29297206" y="-19.925879" rx="1.1331379" ry="1.1459208" transform="matrix(0,1,-0.98811636,-0.15370773,0,0)" />
+            <path style="baseline-shift:baseline;display:inline;overflow:visible;opacity:1;vector-effect:none;fill:var(--fill-color-secondary,canvas);stroke-linecap:square;enable-background:accumulate;stop-color:#000000;stop-opacity:1" d="m 1.0963877,-4.5723639 c 0.047917,0.2961138 0.255269,0.5175469 0.5051882,0.5175469 H 1.8351533 L 1.5670258,-16.138434 c -0.00323,-0.145473 0.019831,-0.284671 0.065122,-0.412568 -0.027693,-0.360029 -0.077825,-0.72937 -0.1444215,-1.086009 -0.2303355,0.06501 -0.401732,0.322524 -0.401732,0.632499 l 3.042e-4,12.3009242 c 0,0.044919 0.00324,0.088922 0.010089,0.1312239 z" transform="matrix(0,1,-0.98450913,-0.17533331,0,0)" />
+            <path style="display:inline;fill:var(--fill-color-secondary,canvas);stroke-width:1.0074;stroke-linecap:square" d="m 0.28357095,-6.3186304 c 0.0479172,0.2639903 0.25567408,0.4615202 0.50559324,0.4615202 h 0.0733805 L 0.91643734,-16.98971 c 0.002266,-0.466444 0.31630196,-0.89944 0.77205986,-0.89944 h 0.1054199 l 0.00157,-0.09073 H 0.78883272 c -0.2856219,0 -0.51521518,0.258103 -0.51521518,0.578474 l -1.8299e-4,10.9658232 c 0,0.040046 0.003291,0.079241 0.0101364,0.1169534 z M 1.3663899,-5.8571102 H 1.5508748 L 1.7837036,-17.385674 h -0.097668 c -0.115486,0 -0.26453,0.1443 -0.2657525,0.395964 z" transform="matrix(0,1,-0.98533641,-0.1706229,0,0)" />
+            <path style="display:inline;fill:var(--fill-color,currentcolor);fill-opacity:1;stroke:none;stroke-width:1.00599;stroke-linecap:square;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1" d="m -0.30349159,-17.732133 0.91168722,0.162123 0.0109321,-0.446624 c 0.0144307,-0.563986 0.066013,-0.893959 0.11748843,-1.091458 0.0514759,-0.197499 0.0931064,-0.256062 0.15312274,-0.375499 0.0904101,-0.17992 0.1709412,-0.267002 0.2158924,-0.303328 l 8.04e-5,5.23e-4 -4.364e-4,5.23e-4 8.04e-5,5.23e-4 c 0.00462,0.01978 0.1534427,0.148038 0.2998155,0.478003 0.2911988,0.656443 0.5370337,1.776279 0.5941892,2.816766 -0.048129,0.12743 -0.074276,0.26612 -0.074276,0.411062 l 2.617e-4,12.2696154 c 0,0.6348401 0.504898,1.1458475 1.1326564,1.1458475 H 18.533027 c 0.627758,0 1.133355,-0.5110074 1.133355,-1.1458475 L 19.66612,-16.079519 c 0,-0.215016 -0.05794,-0.415732 -0.159003,-0.587306 -0.120007,-1.292764 -0.610998,-2.570315 -1.231337,-3.367986 -0.180344,-0.231899 -0.37598,-0.433304 -0.636665,-0.571616 -0.203637,-0.108044 -0.469942,-0.151135 -0.696484,-0.09675 l -15.7760222,-0.0016 c -0.23097345,-0.0492 -0.47220012,0.0066 -0.64208529,0.126038 -0.19267985,0.135456 -0.33179269,0.331646 -0.4621017,0.590966 -0.03744804,0.07452 -0.13702133,0.249174 -0.20974851,0.528209 -0.072727,0.279036 -0.12947122,0.670318 -0.14503757,1.278684 z" transform="matrix(0,1,-0.98811636,-0.15370773,0,0)" />
+            <path style="baseline-shift:baseline;display:inline;overflow:visible;opacity:1;vector-effect:none;fill:var(--fill-color,currentcolor);stroke-linecap:square;enable-background:accumulate;stop-color:#000000;stop-opacity:1" d="M 0.84846862 -4.5303723 C 0.91438402 -4.1346435 1.2025211 -3.8028672 1.6013093 -3.8028672 L 1.841088 -3.8028672 C 1.8408086 -3.8098945 1.8406639 -3.8168047 1.8405073 -3.8238631 L 1.8297355 -4.3067668 L 1.6013256 -4.3067668 C 1.4858396 -4.3067668 1.3380551 -4.4511886 1.3380551 -4.7030629 L 1.3377509 -17.003987 C 1.3377509 -17.206775 1.4338596 -17.339773 1.5315692 -17.384011 C 1.5041116 -17.553345 1.4726868 -17.721066 1.4380866 -17.884761 C 1.0727908 -17.795627 0.83390571 -17.41266 0.83390571 -17.003987 L 0.8342099 -4.7030629 C 0.8342099 -4.6447084 0.83905213 -4.586905 0.84846862 -4.5303723 z " transform="matrix(0,1,-0.98450913,-0.17533331,0,0)" />
+            <rect style="display:inline;fill:var(--fill-color-secondary,canvas);fill-opacity:1;stroke:none;stroke-width:1.00702;stroke-linecap:square;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1" width="16.367279" height="11.785467" x="2.6231859" y="-15.15197" rx="0.52113724" ry="0.56219465" transform="matrix(0,1,-0.98607529,-0.16629947,0,0)" />
+            <path style="fill:var(--fill-color,currentcolor);fill-opacity:1;stroke:var(--fill-color-secondary,canvas);stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000" d="m 10.773293,8.6506526 c -0.01557,-0.01561 -0.03607,-0.010716 -0.05424,2.4e-6 L 9.6435242,9.2858272 A 3.4145523,3.0333565 53.232505 0 0 9.237471,9.0977511 L 8.8141007,7.7830379 c -0.00433,-0.013922 -0.011167,-0.026705 -0.020357,-0.034648 -0.00539,-0.00485 -0.012308,-0.00749 -0.019909,-0.00795 l -1.262912,-0.050916 c -0.020406,-7.566e-4 -0.029878,0.017991 -0.033702,0.039851 L 7.2441761,9.0007409 A 3.4145523,3.0333565 53.232505 0 0 6.836435,9.1596789 L 5.6861365,8.4483097 c -0.019815,-0.012263 -0.041115,-0.018543 -0.054537,-0.00407 L 4.8053667,9.3334938 c -0.013418,0.01443 -0.00667,0.036334 0.00588,0.056425 l 0.7104195,1.1426082 a 3.4145523,3.0333565 53.232505 0 0 -0.1585166,0.462239 l -1.1794965,0.27898 c -0.020763,0.0049 -0.038402,0.01579 -0.036936,0.03693 l 0.094475,1.308457 c 0.00161,0.0212 0.020772,0.03328 0.04231,0.03994 l 1.209766,0.370401 a 3.4145523,3.0333565 53.232505 0 0 0.2320326,0.505592 l -0.5380329,1.069532 c -0.00972,0.01922 -0.013687,0.04062 0.00195,0.05627 l 0.9597677,0.961173 c 0.015574,0.0156 0.036064,0.01074 0.054239,8e-6 l 1.0101512,-0.59672 a 3.4145523,3.0333565 53.232505 0 0 0.4946805,0.222186 l 0.4001154,1.242154 c 0.00713,0.02216 0.020055,0.04154 0.040161,0.04265 l 1.2625798,0.0509 3.31e-4,1.5e-5 c 0.02047,7.39e-4 0.02997,-0.01816 0.03386,-0.04001 l 0.226104,-1.233457 A 3.4145523,3.0333565 53.232505 0 0 10.1106,15.1285 l 1.125435,0.695947 c 0.01981,0.01231 0.04112,0.0185 0.05453,0.0041 l 0.826233,-0.889253 c 0.01342,-0.01443 0.0067,-0.03629 -0.0059,-0.05643 l -0.724681,-1.165745 a 3.4145523,3.0333565 53.232505 0 0 0.138649,-0.430958 l 1.213646,-0.287118 c 0.02076,-0.0049 0.03839,-0.01579 0.03693,-0.03693 l -0.09429,-1.308289 -1.8e-4,-1.72e-4 c -0.0015,-0.02124 -0.02071,-0.03326 -0.04231,-0.03993 l -1.280115,-0.391905 a 3.4145523,3.0333565 53.232505 0 0 -0.196233,-0.415379 l 0.572562,-1.1382446 c 0.0097,-0.019218 0.01369,-0.040615 -0.002,-0.056271 z" />
+            <path style="fill:var(--fill-color-secondary,canvas);stroke-width:0.25;stroke-linecap:round;stroke-linejoin:round;stop-color:#000000" d="m 9.4690992,11.769091 a 1.1969729,1.0633446 53.232454 0 1 -0.5359481,1.457883 1.1969729,1.0633446 53.232454 0 1 -1.4800668,-0.72362 1.1969729,1.0633446 53.232454 0 1 0.5359493,-1.457883 1.1969729,1.0633446 53.232454 0 1 1.4800656,0.72362 z" />
+        </svg>
+        <svg id="icon-definition_pin" class="icon pin" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+            <path style="fill:var(--fill-color,currentcolor);fill-opacity:1;stroke-width:3.90681;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke markers fill;stop-color:var(--fill-color,currentcolor)" d="M 16.82883,0.54673487 C 15.666456,1.6041177 15.531557,3.3434838 15.756255,4.5765617 c 0,0 -0.01115,0.026693 -0.02197,0.052187 L 19.28024,8.174703 c 0.02552,-0.010812 0.05173,-0.022431 0.05173,-0.022431 1.23308,0.2246983 2.972444,0.089797 4.029826,-1.0725765 L 20.270411,3.988316 19.920211,3.6381152 Z M 15.372179,5.3039722 c -0.03697,0.058544 -0.07634,0.1190475 -0.119028,0.1812805 -0.279263,0.4072506 -4.182243,3.0372019 -5.7126222,4.06004 l 4.8227002,4.8227003 c 1.022838,-1.530379 3.65279,-5.4333592 4.06004,-5.7126223 0.06224,-0.042674 0.122736,-0.082054 0.18128,-0.1190225 z M 8.9184118,9.9595827 c -0.0013,8.41e-4 -0.02151,0.01511 -0.02151,0.01511 C 6.8153574,8.4081475 5.2054534,9.1721039 4.2215507,9.7590242 6.2236589,11.778033 6.5379915,12.07916 8.7261451,14.264535 l -7.98274646,7.982746 0.041658,0.876646 0.87664666,0.04165 7.9827465,-7.982746 c 2.1851722,2.187953 2.4861462,2.502131 4.5050532,4.504137 0.586922,-0.983901 1.351334,-2.59335 -0.215209,-4.67489 0,0 0.01373,-0.0207 0.01464,-0.02197 z" />
+        </svg>
+    </div>
+    <script type="module" src="./public/libs/code-example.min.js"></script>
+
+</body>
+
+</html>

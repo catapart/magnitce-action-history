@@ -2,41 +2,45 @@
   "name": "@magnit-ce/action-history",
   "version": "0.0.7",
   "description": "A custom html element that documents user actions in the DOM and provides functionality for navigating the history of those actions.",
-  "type": "module",
-  "main": "dist/action-history.js",
-  "module": "dist/action-history.mjs",
+  "main": "dist/action-history.umd.js",
+  "module": "dist/action-history.js",
   "types": "dist/action-history.d.ts",
+  "type": "module",
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "tsup action-history.ts --format cjs,esm --dts --clean",
-    "build-vanilla": "tsup action-history.ts --format esm --dts --clean --outDir ./vanilla",
-    "minify": "tsup action-history.ts --format esm --config ./tsup.config.min.ts --outDir ./vanilla --minify",
-    "lint": "tsup action-history.ts --format esm --tsconfig ./tsconfig.lint.json",
-    "package": "npm run build && npm run build-vanilla && npm run minify",
-    "release": "npm run package && changeset publish"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "build-tests": "vite build --config vite.config.tests.ts",
+    "changeset": "npx @changesets/cli",
+    "release": "npm run build && npx @changesets/cli publish"
   },
   "keywords": [
     "custom",
     "element",
     "html",
+    "browser",
     "undo",
     "redo",
     "history",
     "action"
   ],
+  "devDependencies": {
+    "@changesets/cli": "^2.27.7",
+    "@magnit-ce/test-runner": "^0.0.8",
+    "@rollup/plugin-terser": "^1.0.0",
+    "changesets": "^1.0.2",
+    "glob": "^13.0.0",
+    "typescript": "^5.5.3",
+    "vite": "^8.0.0",
+    "vite-plugin-dts": "^4.5.4"
+  },
   "author": "catapart",
   "license": "CC0-1.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/catapart/magnitce-action-history"
-  },
-  "devDependencies": {
-    "@changesets/cli": "^2.27.7",
-    "minify": "^11.4.0",
-    "terser": "^5.31.3",
-    "tsup": "^8.2.0",
-    "typescript": "^5.5.3"
   }
 }

@@ -1,0 +1,232 @@
+/* Properties */
+
+:root
+{
+    --blue: #60B5FF;
+    --blue-med: rgb(45, 133, 204);
+    --blue-dark: rgb(0, 88, 155);
+    --blue-darker: rgb(0, 59, 124);    
+
+    --white-1: oklab(97% 0 0);
+    --white-2: oklab(99% 0 0);
+    --white-3: oklab(100% 0 0);
+
+    --surface-background: var(--white-1);
+    --text-background: oklab(35% 0 0);
+
+    --surface-highlight: linear-gradient(75deg, var(--blue-med), transparent 40%), linear-gradient(75deg, var(--blue) 50%, var(--blue-dark));
+    --text-highlight: var(--white-2);
+
+    --text-anchor: var(--blue-med);
+    --text-anchor-hover: var(--blue-dark);
+    --text-anchor-active: var(--blue-darker);
+
+    --text-highlight-anchor: var(--white-2);
+    --text-highlight-anchor-hover: var(--white-2);
+    --text-highlight-anchor-active: var(--white-2);
+
+    
+    --surface-message: oklch(96.353% 0.01843 306.471);
+    --text-message: oklch(50.978% 0.1507 301.211);
+    --border-color-message: oklch(50.978% 0.1507 301.211);
+    
+    --surface-arrow-1:  white;
+    --surface-arrow-2: var(--blue);
+    --surface-arrow-3: var(--blue-dark);
+
+
+    --gap-small: 7px;
+    --gap: 14px;
+    --gap-large: 24px;
+    
+    --column-min-width: 280px;
+    --column-width: 960px;
+    --gutter-minimum: 10px;
+}
+@media (prefers-color-scheme: dark) 
+{
+    :root
+    {
+        --surface-background: oklab(18% 0 0);
+        --text-background: oklab(85% 0 0);
+        --blue-darker: oklch(48.107% 0.12345 256.044);  
+        --blue-dark: oklch(55.426% 0.12998 250.409);  
+    }
+}
+
+/* Elements */
+*
+{
+    box-sizing: border-box;
+}
+
+html
+{
+    color-scheme: light dark;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+body
+{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    overflow: hidden;
+
+    font-family: sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    background: var(--surface-background);
+    color: var(--text-background);
+}
+
+
+
+body
+{
+    display: grid;
+    grid-template-rows: auto 1fr;
+}
+
+main
+{
+    display: grid;
+    overflow: hidden;
+}
+
+svg { display: initial; }
+
+.page-header
+{
+    height: max-content;
+    background: var(--surface-highlight);
+    color: var(--text-highlight);
+
+    display: grid;
+    overflow: hidden;
+}
+
+.page-header > *
+{
+    grid-row: 1;
+    grid-column: 1;
+}
+
+.page-header .text
+{
+    display: grid;
+    z-index: 1;
+    padding-inline: var(--gap);
+}
+
+.page-header .breadcrumbs
+{
+    grid-column: span 3;
+    color: var(--text-highlight);
+    text-decoration: none;
+    font-weight: bold;
+    text-shadow: 1px 1px 0 rgb(0 0 0 / .2);
+}
+
+.page-header .breadcrumbs a
+{
+    color: var(--text-highlight-anchor);
+    text-decoration: none;
+    font-weight: bold;
+    text-shadow: 1px 1px 0 rgb(0 0 0 / .2);
+}
+.page-header .breadcrumbs a:not(:first-of-type)::before
+{
+    content: "\\";
+    margin-inline: var(--gap-small);
+}
+
+.page-header .title
+{
+    font-size: 32px;
+    text-transform:uppercase;
+    text-shadow: 4px 3px 0 rgb(0 0 0 / .3);
+    align-content: flex-end;
+    margin: var(--gap-small) 0;
+}
+
+.page-header .arrows
+{
+    position: relative;
+    height: 0;
+}
+.page-header .arrow
+{
+    background-repeat: no-repeat;
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    transform: rotate(-90deg);
+    z-index: 0;
+}
+.page-header .arrow.reverse
+{
+    transform: rotate(90deg);
+}
+.page-header .arrow svg
+{
+    width: 60px;
+    height: 60px;
+}
+.page-header .arrow:nth-of-type(1)
+{
+    top: -20px;
+    --fill-color: var(--surface-arrow-1);
+    opacity: .2;
+}
+.page-header .arrow:nth-of-type(2)
+{
+    top: 10px;
+    left: 30px;
+    --fill-color: var(--surface-arrow-2);
+    opacity: .4;
+}
+.page-header .arrow:nth-of-type(3)
+{
+    top: 45px;
+    left: 10px;
+    --fill-color: var(--surface-arrow-3);
+    opacity: .6;
+}
+
+.message
+{
+
+    padding: var(--gap);
+    margin: var(--gap-large);
+    justify-self: center;
+    font-size: 14px;
+    display: grid;
+    border: solid 1px var(--border-color-message);
+    border-radius: 5px;
+    background: var(--surface-message);
+    color: var(--text-message);
+}
+.message::before
+{
+    content: "Message";
+    font-weight: bold;
+    max-width: 70ch;
+}
+.message.warn
+{
+    --surface-message: rgb(255 252 241);
+    --border-color-message: rgb(207, 167, 92);
+    --text-message: rgb(137 100 7);
+}
+
+/* Utilities */
+#icon-definitions
+{
+    display: none;
+}

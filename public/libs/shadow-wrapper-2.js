@@ -1,4 +1,3 @@
-import '../vanilla/action-history.js';
 const COMPONENT_TAG_NAME = 'shadow-wrapper-2';
 export class ShadowWrapperElement extends HTMLElement
 {

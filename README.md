@@ -1,185 +1,128 @@
-# `<action-history>` Element
-A custom `HTMLElement` that documents user actions in the DOM and provides functionality for navigating the history of those actions.
+# Warning - Non-production package
+> [!WARNING]  
+> This project is being prepared for production, but is not ready to be used as a dependency for anything. There will be breaking changes and unrecoverable states. Do not use until this warning has been removed.
+> When the library reaches the `1.0.0` designation, that will be a production package. From that point, you can use the major version number (`1` in `1.0.0`) to recognize when breaking changes are introduced.
 
-Package size: ~6kb minified, ~12kb verbose.
-
-## Quick Reference
-```html
-<action-history reverse>
-    <button type="button" data-entry>Entry 1</button>
-    <button type="button" data-entry>Entry 2</button>
-    <button type="button" data-entry>Entry 3</button>
-</action-history>
-<script type="module" src="/path/to/action-history[.min].js"></script>
-```
-
-## Demos
-https://catapart.github.io/magnitce-action-history/demo/
-
-## Support
-- Firefox
-- Chrome
-- Edge
-- <s>Safari</s> (Has not been tested; should be supported, based on custom element support)
-
-## Getting Started
- 1. [Install/Reference the library](#referenceinstall)
-
-### Reference/Install
-#### HTML Import (not required for vanilla js/ts; alternative to import statement)
-```html
-<script type="module" src="/path/to/action-history[.min].js"></script>
-```
-#### npm
-```cmd
-npm install @magnit-ce/action-history
-```
-
-### Import
-#### Vanilla js/ts
-```js
-import "/path/to/action-history[.min].js"; // if you didn't reference from a <script>, reference with an import like this
-
-import { ActionHistoryElement } from "/path/to/action-history[.min].js";
-```
-#### npm
-```js
-import "@magnit-ce/action-history"; // if you didn't reference from a <script>, reference with an import like this
-
-import { ActionHistoryElement } from "@magnit-ce/action-history";
-```
-
----
----
----
+# The `action-history` Custom Element
 
 ## Overview
-The `<action-history>` element is intended to add a simple interface and management controls for a "History" system.
+A custom html element that documents user actions in the DOM and provides functionality for navigating the history of those actions.
 
-History systems are a generalized name for functionality that provides features like "Undo" and "Redo" found in many common applications. The `<action-history>` element implements such a system, while accounting for edge cases and design patterns that are only expected for history systems.
+|||||
+|-|-|-|-|
+|Package size, **verbose**:|~12kb|Package size, **minified**:|~6kb|
 
-### Entry Order
-Entries in the `<action-history>` element are ordered by when they occurred chronologically, which is maintained by adding a [timestamp](#entry-attributes) to each entry as it is entered. It can be expected that looping through the `<action-history>` element's `children` property (filtered for entries, if you've provided any non-entry children), will result in a chronological list of entries.
 
-### Active Entry
-A history system crudely models a timeline where some entries happened in the past, and some entries may have happened later that "now". To define that point of "now" on the timeline, that entry is defined as the "active" entry.
 
-Entries may be activated in many ways, but the first way they will be activated it by being added to the `<action-history>` element. Whenever a new entry is added, that entry is understood to be the latest thing that has happened in this "timeline" and so that entry is made to be "active".
+## Quick Start
+```html
+<action-history reverse>     <button type="button" data-entry>Entry 1</button>     <button type="button" data-entry>Entry 2</button>     <button type="button" data-entry>Entry 3</button> </action-history>
+```
 
-Only one element can be the "active" entry at any given time. To indicate this, the entry that is active is given an ["active" attribute](#entry-attributes). All activation and deactivation is handled by the `<action-history>` element whenever navigation occurs.
+## Links
+### Demo:
+https://catapart.github.io/magnitce-action-history
+### Documentation:
+https://catapart.github.io/magnitce-action-history/docs
+### Automated Testing:
+https://catapart.github.io/magnitce-action-history/tests.html
 
-### Reversed Entries
-In order to indicate that an entry's actions should be undone, the `<action-history>` element provides the ability to "reverse" an entry. When an entry is reversed, you can think of that entry as having occurred in an alternate future. The history is still tracking it, but the [active](#active-entry) entry will always be prior to the earliest reversed entry, if any prior entry exists.
+## Repo Notes
+This section provides instructions for how to use the repo to develop the library.
 
-When an entry has been reversed, it is understood by the `<action-history>` element as unrepresentative of the current state of its parent project. As such, it is de-emphasized, visually, and can be [overwritten](#overwriting-entries).
+### Installation
+Install the repo using a package manager:
+```cmd
+npm install
+```
 
-Selecting a reversed entry will "restore" that entry by activating it, and removing the reversed status from any preceeding entries.
+### Configuration
+#### `tsconfig.json`
+The `tsconfig.json` file is generated by the `vite` dependency and has not been modified by this library. It uses strict linting and defaults to `es` modules, rather than `commonjs` modules. For more information about each of the `tsconfig.json` options, see the [tsconfig documentation](https://www.typescriptlang.org/tsconfig/).
+#### `vite.config`
+The `vite.config` file sets defaults options for the dev, build, and release processes, which allows the code to be packaged as a library (rather than a website) and defines custom inputs and outputs to exclude tests and create both `es` and `umd` modules. It also includes settings that allow for multiple file outputs with well-defined names and selective minification. For more information about configuring `vite`, see the [vite config documentation](https://vite.dev/config/).
+#### `vite.config.tests.ts`
+This specialized `vite.config` file defines custom inputs and outputs that include tests and then are packaged into the `test-runner` directory, rather than built to the `dist` directory.
 
-## Functions
-The `<action-history>` element can be navigated by using its functions, and dispatches events when navigation occurs. Navigation is distinct from "Activation" or "Reversal" in that it describes an event of the history system, rather than a state change for an entry. Entries are "Active" or "Reversed"; the history moves "back" or "forward".
+### Development
+The `src` directory has a `dev` subdirectory that is intended for development. Developers can link to code-test files written in typescript, which allows for full type support while writing tests during development.
 
-### `back()` and `forward()` functions
-To facilitate navigation, the `<action-history>` element has `back()` and `forward()` functions. These work similarly to browser "back" and "forward" navigation and activate or reverse entries when called. The entries that will be affected are based on the current [active](#active-entry) entry. `back()` moves to the preceeding entry, if it exists, and `forward()` moves to the next entry, if it exists.
+Place development tests in the `tests` subdirectory of the `dev` directory. Use the suffix `.tests` to denote that a typescript file is a code-tests file. (*example: `interface.tests.ts`*)
 
-### `activateEntry()` and `reverseEntry()` functions
-These functions provide two more methods of navigation that allow for multiple entries to be either activated or reversed in a single function. Whereas `back()` and `forward` navigate from the currently active entry, `activateEntry()` and `reverseEntry()` each take a reference to an entry and then directly activate that entry, or reverse that entry.
+Once tests have been added, the `build-tests` script can be used to compile the typescript tests into javascript tests that will be available for use in any `<code-tests>` or `<test-runner>` elements - including on the `tests.html` page.
 
-In maintaining the history, each function will collect all entries between the previously active entry and the target entry, and reverse or activate them before providing all affected entries in the [`activate` or `reverse` events](#events).
+### Test Page
+The test page (`tests.html`) in the root directory can be used to demonstrate passing tests to users. 
 
-Each function takes in a `target` entry as its parameter. In the `activateEntry()` function, the target will be activated and all earlier reversed entries will be activate as well. In the `reverseEntry()` function, the target will be reversed and all later entries that have not been reversed will be reversed, as well. Also, if there is a preceeding entry to the `target` entry, that preceeding entry will be activated.
+Tests can be created in the `src/dev/tests` directory and developed using the dev page. When all tests are passing, use the `build-tests` script to transpile the `.ts` test files into `.js` test files that are deployed to the `public/tests` directory, which can be referenced by the `tests.html` page.
 
-For reference, the `back()` and `forward()` functions each call the `activateEntry()` function, while the `reverseEntry()` function is not invoked by the `<action-history>` element. The `reverseEntry()` function is provided as a way to navigate the history when you only have a reference to the entry you want to reverse, rather than having a referece to the entry you want to activate.
+The test page will also expect a reference to the library file, which won't exist until the `build` script has been run. If running the project causes errors, check the test page to either remove the script tags requesting the library file, or build the library to provide the test page with its requested source file.
 
-### `onBack()` and `onForward()` functions
-These functions are not the same as the `back()` and `forward()` functions. Those functions cause the `<action-history>` element to perform a navigation. The `onBack()` and `onForward()` functions, on the other hand, are dummy functions that can be overridden to inject functionality during the navigation events.
+### Scripts
+#### `dev`
+Use `vite` to begin a server with Hot Module Replacement, which will automatically reload any time a change in a source file is saved.
+#### `build`
+Use `vite` to transpile the source code into code chunks or library files. Files are output into the `dist` directory by default.
+#### `preview`
+Use `vite` to serve the `dist` directory. Useful for non-library projects, where the `dist` directory will contain an `index.html` file, or other browse-able entry point.
+#### `build-tests`
+Use `vite` to transpile all files with a `.tests.[ts|js|tsx|jsx]` extension into the `public/tests` subdirectory. Creates javascript files that can be served to the `<test-runner>` and `<code-tests>` components, which are included in the `public/libs` subdirectory.
+#### `changeset`
+Runs the `npx @changesets/cli` command to create a new changeset which will prepare the library to be published.
+#### `release`
+Use `vite` to transpile the source code and then use `changesets` to begin the publication procedure for the repo environment (github or gitlab).  
+If this script is run during CI/CD for the `main` branch, the library is published to [npm](https://www.npmjs.com/). If it is run during CI/CD for any other branch, the library is linted and compiled. It is expected that this command will *only* be used by a CI/CD pipeline, and **never** by a library dev. Running the `release` script on a local codebase is not supported.
 
-More simply, the `back()` function calls and awaits the `onBack()` function before it marks an entry as 'reversed'. Similarly, the `forward()` function calls and awaits the `onForward()` function before removing an entry's 'reversed' status.
 
-The intention of these functions is to allow the implementing developer to perform their data persistence functionality (like saving the state of any records affected by the "undo" or "redo" functionality) at the point of the entry's state change. As such, these functions are not only called during the `back()` and `forward()` functions, but any time an entry's state is changed.
+### Publishing
 
-These are functions, rather than events, so that they can be awaited before the entry is marked as reversed or activated. This design is a convenience for asynchronous functionality which is common when working with data stores.
+#### Releasing with `changesets`
+Publishing is handled using the `changesets` library which starts the process by requiring a manual entry into a running version log. Once you have defined a set of changes as a version change, the automated processes can prepare the library to be published on to `npm`. When the automation has prepared the release, it will create a pull request from a new branch containing the release package. The publishing developer will be required to merge that branch into main, using the pull request, in order to publish a new version.
 
-Each of the functions provides the following parameters:
-|Parameter|Type|Description|
-|-|-|-|
-|`target`|`HTMLElement`|In the `onBack()` function, the earliest entry that is reversed in the `toReverse` array. In the `onForward()` function, the latest entry to activate, in the `toActivate` array.|
-|`previous`|`HTMLElement` or `undefined`|The previous entry that was active, if any.|
-|`toActivate`/`toReverse`|`HTMLElement[]`|All elements that were reversed/activated during this navigation event. Relevant when navigating to an entry more than one index away from the currently active entry.|
-|`targetIndex`|`number`|The index of the entry element in the `<action-history>` element's children.|
-|`previousActiveEntryIndex`|`number`|The index of the previous element in the `<action-history>` element's children, if the previous element is not `undefined`.|
+The step-by-step process is outline below for both Github and Gitlab:
 
-## Events
-The `<action-history>` element dispatches events when navigation occurs and when an entry is added. The following table lists each event, along with a description and the properties that are available on it's `event.detail` property.
-|Event Name|Description|`detail` Properties|
-|-|-|-|
-|`add`|Dispatched when an entry has been added to the `<action-history>` element.|`{ target: [HTMLElement] }`|
-|`activate`|Dispatched when the `activateEntry()` function is called (not, necessarily, when an entry has become [activated](#active-entry); this function still notifies when a lone entry has been reversed, even though there is no newly activated entry. Those edge cases are part of the reason for this custom element).|[see table](#activate-and-reverse-event-properties)|
-|`refresh`|Dispatched when an entry that is already active is selected again.|`{ target: [HTMLElement] }`|
-|`reverse`|Dispatched when an entries have been [reversed](#reversed-entries) using the `reverseEntry()` function.|[see table](#activate-and-reverse-event-properties)|
+##### Github Steps
+1. **Run `changeset` command**: `npm run changeset` | `bun run changeset` | `pnpm changesets` | `yarn changesets` | `npx @changesets/cli`
+1. **Log version info**: Add a message that describes the changes in this version
+1. **Check in**: Push changes to repo
+1. **Merge**: Merge branch into `main`
+1.  **Merge Automation Branch**: Await repo automation's creation of a new pull request from a newly created branch. Accept the pull request, merging the branch into main.
 
-#### `activate` and `reverse` Event Properties
-|Property|Type|Description|
-|-|-|-|
-|`target`|`HTMLElement`|The entry that was passed in as the parameter. The "active" entry, in an `activate` event, and the earliest reversed entry in the `reverse` event.|
-|`previousActiveEntry`|`HTMLElement` or `undefined`|The previous entry that was active, if any.|
-|`toReverse`|`HTMLElement[]`|All elements that were reversed during this navigation event.|
-|`toActivate`|`HTMLElement[]`|All elements that were activated during this navigation event.|
-|`targetIndex`|`number`|The index of the entry element in the `<action-history>` element's children.|
-|`previousActiveEntryIndex`|`number`|The index of the previous element in the `<action-history>` element's children, if the previous element is not `undefined`.|
+After automation completes, the new version will be published to `NPM`.
 
-## Removing Entries
-Removing entries from the `<action-history>` element is a destructive action. As the `<action-history>` element acts as the history record, itself, entries being removed from it literally removes the entry from the history system.
+##### Gitlab Steps
+1. **Run `changeset` command**: `npm run changeset` | `bun run changeset` | `pnpm changesets` | `yarn changesets` | `npx @changesets/cli`
+1. **Log version info**: Add a message that describes the changes in this version
+1. **Check in**: Push changes to repo
+1. **Merge**: Merge branch into `main`
+1.  **Merge Automation Branch**: Await repo automation's creation of a new merge request from a newly created branch. Merge the merge request into main.
 
-The `<action-history>` element never adds elements to itself and only removes elements in the case where history entries are [overwritten](#overwriting-entries). It is expected that the implementer will manage adding and removing entries. The exception for overwritten items is due to the nature of overwriting in that it does actually alter the entries. To reflect that, the entries are removed so that the DOM still accurately represents the current history.
+After automation completes, the new version will be published to `NPM`.
 
-In all other cases, it is expected that the implementer remove entries as part of their implementation's history entry features. Most commonly, this is done to observe a maximum limit of history entries, or when a user explicitly invokes a removal.
+### Dependencies
 
-## Overwriting Entries
-When a new entry is added, while there are entries in the `<action-history>` element that have been [reversed](#reversed-entries), each of the reversed entries will be "overwritten". This means that they will be removed from the `<action-history>` element and, in effect, removed from the history system that it represents. Those actions will not be able to be recovered and the history system will act as though they never occurred.
+#### Library Dependencies
 
-This type of functionality mimics most common history systems. It is analogous to typing, then using "undo", and then typing something else. The first thing you typed cannot be restored now that you have typed a new thing. But you can still undo the new thing that was typed.  
-In the same way, the `<action-history>` element clears out the reversed entires whenever a new entry is addded.
 
-## Parallel History
-In some cases, it may make sense to allow a user action to be "undone", while not forcing the entire history to rewind to that point. As an example, a writing app that has settings could allow those settings changes to be undo-able, without having those actions be undone by rewinding changes in the open document.
+#### Development Dependencies
 
-In these cases, it is expected that mutltiple `<action-history>` elements are used, as there are two completely separate histories being recorded. By the same reasoning, the `<action-history>` element does not implement any method for reversing a single history item without navigating the history to that point.
+##### [`typescript`](https://www.typescriptlang.org/)
+Typescript provides type checking at dev time which adds compile-time safety to the codebase for a wide range of issues. For more information on Typescript, visit its [website](https://www.typescriptlang.org/).
 
-## Attributes
-The `<action-history>` element uses attribute queries to manage its entries. Each of the entry elements will have multiple attributes toggled on, to determine their state, in addition to the attribute that will be used to define a child element as an entry.
+##### [`@changesets/cli`](https://github.com/changesets/changesets)
+The `changesets` library uses a strict process to handle versioning and publishing which makes the update and deployment of any library to NPM a structured and repeatable series of steps. Versioning is managed by a command-line utility which enforces release notes and semantic versions. Publishing is handled automatically by CI/CD pipelines when code is checked in. The structure allows for automated pipelines to handle linting and testing, while requiring manual directives to invoke action. Versions are not accidentally published, because all code changes that haven't been packaged into a changeset are transparent to the library. As soon as a version is updated (by the library), the CI/CD pipelines will trigger and the library developer will need to merge branches in order to complete the publishing. By enforcing these procedures, `changesets` keeps this library releasing traceable and well-versioned packages.
 
-### Entry Attributes
-Child elements of the `<action-history>` element will be treated as history entries so long as they have the "entry attribute". The "entry attribute" is named `data-entry` by default, using the `data-` prefix so that it is a valid attribute on any element type.
+##### [`vite`](https://vite.dev/)
+Vite is a packaging library that includes a lot of features that make development faster and easier. Packaging and minifying are built in as well as "hot module reload" so that saving any source file will reload the script in the development environment instantly. That is made even better because Vite also dynamically swaps typescript references for javascript references, meaning that a development build can target and debug with the typescript files directly. It is also configurable enough to account for a wide variety of project types.
 
-In addition to the entry attribute, there are "active", "reversed", and "timestamp" attributes that each entry will have toggled, depending on their state. Each of these attributes, along with a description and their default attribute names are listed here:
-|Attribute Type|Default Attribute Name|Description|
-|-|-|-|
-|Entry|`data-entry`|Add this to a child element of `<action-history>` element to define that child as an entry.|
-|Active|`data-active`|This attribute is added to the active entry's element.|
-|Reversed|`data-reversed`|This attribute is added to each reversed history entry.|
-|Timestamp|`data-timestamp`|This attribute stores a timestamp for sorting the entries, and is used in determing whether or not an entry is being actively managed by the `<action-history>` element.|
+##### [`vite-plugin-dts`](https://www.npmjs.com/package/vite-plugin-dts)
+This plugin for the `vite` library allows the packaging process to also produce a `.d.ts` file to describe all of the Typescript types exposed by the library. Without that export, other projects that use Typescript would not be able to see the full manifest of exported types.
 
-### `<action-history>` Attributes
-Each of the `<action-history>` element's [entry attributes](#entry-attributes) are able to be customized by using the attributes of the `<action-history>` element, itself.
+##### [`@rollup/plugin-terser`](https://www.npmjs.com/package/@rollup/plugin-terser)
+This plugin, which was developed for one of `vite`'s dependencies (`rollup`) but is used in this project by `vite`, provides a type of minification that is not supported by the default library. Using this plugin, the library can be packaged with both unminified and minified code, so that developers who implement the library can debug the code in un-minified files, while still being able to ship a minified version without having to minify it in their own projects.
 
-Setting these attributes on the `<action-history>` element will override the attribute name used when managing the history entries:
-|Attribute Name|Description|Default|
-|-|-|-|
-|`entry-attribute`|The name of the attribute that will be used to find child elements that are intended to be history entries.|`data-entry`|
-|`active-attribute`|The name of the attribute that will be added to the active history entry.|`data-active`|
-|`reversed-attribute`|The name of the attribute that will be added to each reversed history entry.|`data-reversed`|
-|`timestamp-attribute`|The name of the attribute that will store a timestamp for sorting the entries.|`data-timestamp`|
+##### [`@magnit-ce/test-runner`](https://github.com/catapart/magnitce-test-runner)
+This library adds custom HTML elements that allow developers to run simple definitions for automated tests directly in a browser. This element is used in the `dev` directory to provide live automated testing.
 
-In addition to these "entry attribute overrides", the `<action-history>` element also accepts a `reverse` attribute, which will reverse the display - but *NOT*  the element order - of each entry so that they can be listed in reverse-chronological order (while still maintaining correct tabbing order, for keyboard navigation).
-
-## Slots
-The `<action-history>` element uses a single slot as a way to monitor child element addition and removal.
-|Slot Name|Description|Default
-|-|-|-|
-|*[Default]*|Slot that holds all children of the element. (*note: this slot has no name; all children of the `<action-history>` element will be placed in this default slot.*)|*[empty]*|
-
-## Styling
-The `<action-history>` element can be styled with CSS, normally. It does not make use of the shadowDOM and contains no internal layout elements or parts.
-
-## License
-This library is in the public domain. You do not need permission, nor do you need to provide attribution, in order to use, modify, reproduce, publish, or sell it or any works using it or derived from it.
+##### [`glob`](https://www.npmjs.com/package/glob)
+`glob` is a low-level library that provides full-featured search capabilities to a command-line input. These search features are used by this library to differentiate between test files and source files within the `vite.config` files.

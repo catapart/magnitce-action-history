@@ -1,0 +1,53 @@
+default:
+ image: node
+
+stages:
+ - build
+ - comment
+ - publish
+ - create-pages
+
+
+build-job:
+ stage: build
+ script: 
+  - npm install
+  - npm run build
+
+comment-job: 
+ stage: comment
+ script: 
+  - npm install
+  - npx changesets-gitlab comment
+ variables: 
+  GITLAB_TOKEN: $PIPELINE_TOKEN
+ rules: 
+  - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "main"
+
+publish: 
+  stage: publish
+  script: 
+    - npm install
+    - npm run build
+    - npx changesets-gitlab
+  variables:
+    GITLAB_TOKEN: $PIPELINE_TOKEN
+    NPM_TOKEN: $NPM_TOKEN
+    INPUT_PUBLISH: npx @changesets/cli publish
+  rules: 
+    - if: $CI_COMMIT_BRANCH == "main"
+
+create-pages:
+  stage: create-pages
+  pages:
+    # The folder that contains the files to be exposed at the Page URL
+    publish: ./
+  rules:
+    # This ensures that only pushes to the default branch will trigger
+    # a pages deploy
+    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
+  # Functions that should be executed before the build script is run
+  before_script:
+    - npm install
+  script:
+    - npm run build
